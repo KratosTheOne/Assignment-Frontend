@@ -39,7 +39,7 @@ const MapView = ({ properties }) => {
         placeholder="Search by property name or type"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="border border-black rounded-2xl mb-2 py-1 px-3 w-[35%] border-solid"
+        className="border border-black rounded-2xl mb-2 py-1 px-3 w-[35%] sm:w-full border-solid"
       />
       <MapContainer
         center={[12.9716, 77.5946]}
