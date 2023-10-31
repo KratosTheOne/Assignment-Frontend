@@ -1,34 +1,846 @@
-import Comparison from "../components/Comparison";
-import Features from "../components/Features";
-import Footer from "../components/Footer";
-import Form from "../components/Form";
-import Hero from "../components/Hero";
-import Process from "../components/Process";
-import Testimonials from "../components/Testimonials";
+import MapView from "../components/MapView";
 
 const Home = () => {
+  const properties = [
+    {
+      id: "1",
+      geocode: [12.9619872, 77.5895293],
+      popUp: "Orient Grand",
+      type: "Apartment",
+    },
+    {
+      id: "2",
+      geocode: [12.9846853, 77.6148343],
+      popUp: "Vaishnavi Premiere",
+      type: "Apartment",
+    },
+    {
+      id: "3",
+      geocode: [12.9879496, 77.592897],
+      popUp: "Govianu Cunningham",
+      type: "Apartment",
+    },
+    {
+      id: "4",
+      geocode: [13.062575, 77.5949423],
+      popUp: "Century Ethos",
+      type: "Apartment",
+    },
+    {
+      id: "5",
+      geocode: [12.9302372, 77.6359561],
+      popUp: "Shriram Esquire",
+      type: "Apartment",
+    },
+    {
+      id: "6",
+      geocode: [12.9685653, 77.667245],
+      popUp: "Godrej Athena",
+      type: "Apartment",
+    },
+    {
+      id: "7",
+      geocode: [12.9916173, 77.5755844],
+      popUp: "GM Govianu",
+      type: "Apartment",
+    },
+    {
+      id: "8",
+      geocode: [12.9802305, 77.5382745],
+      popUp: "Birla Tisya",
+      type: "Apartment",
+    },
+    {
+      id: "9",
+      geocode: [12.8990405, 77.8363907],
+      popUp: "Godrej Woodland",
+      type: "Land",
+    },
+    {
+      id: "10",
+      geocode: [12.9753528, 77.5557069],
+      popUp: "Purva Bluebelle",
+      type: "Apartment",
+    },
+    {
+      id: "11",
+      geocode: [13.0492167, 77.6381904],
+      popUp: "Casagrand Keatsway",
+      type: "Apartment",
+    },
+    {
+      id: "12",
+      geocode: [12.9024113, 77.5853227],
+      popUp: "Adarsh Stratuss",
+      type: "Apartment",
+    },
+    {
+      id: "13",
+      geocode: [12.9271297, 77.7247942],
+      popUp: "Rohan Antara",
+      type: "Apartment",
+    },
+    {
+      id: "14",
+      geocode: [13.0215378, 77.705724],
+      popUp: "Assetz 22 & Crest",
+      type: "Apartment",
+    },
+    {
+      id: "15",
+      geocode: [12.9289434, 77.7310385],
+      popUp: "Adarsh Park Heights Phase 1",
+      type: "Apartment",
+    },
+    {
+      id: "16",
+      geocode: [12.904126, 77.6461895],
+      popUp: "Soulspring Phase 1",
+      type: "Apartment",
+    },
+    {
+      id: "17",
+      geocode: [12.8659103, 77.6938015],
+      popUp: "DS MAX Sahara",
+      type: "Apartment",
+    },
+    {
+      id: "18",
+      geocode: [13.0451058, 77.5714594],
+      popUp: "Prestige Fairfield",
+      type: "Apartment",
+    },
+    {
+      id: "19",
+      geocode: [12.8646794, 77.591126],
+      popUp: "Sattva Aqua Vista",
+      type: "Apartment",
+    },
+    {
+      id: "20",
+      geocode: [13.0019385, 77.6311097],
+      popUp: "Ambience Downtown",
+      type: "Apartment",
+    },
+    {
+      id: "21",
+      geocode: [13.0696152, 77.5887974],
+      popUp: "Olivia at Raintree Boulevard",
+      type: "Apartment",
+    },
+    {
+      id: "22",
+      geocode: [12.900014, 77.6470742],
+      popUp: "Puravankara Purva Meraki",
+      type: "Apartment",
+    },
+    {
+      id: "23",
+      geocode: [12.9121632, 77.5520735],
+      popUp: "Brigade Nanda Heights",
+      type: "Apartment",
+    },
+    {
+      id: "24",
+      geocode: [12.9798963, 77.7598883],
+      popUp: "Prestige Elm Park",
+      type: "Apartment",
+    },
+    {
+      id: "25",
+      geocode: [13.0807059, 77.5911636],
+      popUp: "Visista By Vista Spaces Okas",
+      type: "Apartment",
+    },
+    {
+      id: "26",
+      geocode: [12.7867143, 77.7440838],
+      popUp: "Sobha Manhattan Towers Town Park",
+      type: "Apartment",
+    },
+    {
+      id: "27",
+      geocode: [13.184872, 77.6635876],
+      popUp: "Birla Trimaya",
+      type: "Apartment",
+    },
+    {
+      id: "28",
+      geocode: [13.0070395, 77.6926244],
+      popUp: "Casagrand Galileo",
+      type: "Apartment",
+    },
+    {
+      id: "29",
+      geocode: [12.9994213, 77.710811],
+      popUp: "Mahaveer Camelia",
+      type: "Apartment",
+    },
+    {
+      id: "30",
+      geocode: [13.2303474, 77.5522914],
+      popUp: "Century Wintersun",
+      type: "Villa",
+    },
+    {
+      id: "31",
+      geocode: [13.0178159, 77.7072554],
+      popUp: "RJ Lake Gardenia",
+      type: "Apartment",
+    },
+    {
+      id: "32",
+      geocode: [12.8170684, 77.7755977],
+      popUp: "DS MAX Spoorthi",
+      type: "Apartment",
+    },
+    {
+      id: "33",
+      geocode: [13.071415, 77.6151707],
+      popUp: "Assetz Soho & Sky",
+      type: "Apartment",
+    },
+    {
+      id: "34",
+      geocode: [12.8990752, 77.7060294],
+      popUp: "Sobha Royal Pavilion",
+      type: "Apartment",
+    },
+    {
+      id: "35",
+      geocode: [12.8266906, 77.7192266],
+      popUp: "Concorde Abode 99",
+      type: "Villa",
+    },
+    {
+      id: "36",
+      geocode: [12.9058007, 77.5730752],
+      popUp: "Shriram Southern Crest",
+      type: "Apartment",
+    },
+    {
+      id: "37",
+      geocode: [12.8789472, 77.6906526],
+      popUp: "JRC Wild Woods",
+      type: "Apartment",
+    },
+    {
+      id: "38",
+      geocode: [12.8904809, 77.6958418],
+      popUp: "Macasa Emerald",
+      type: "Apartment",
+    },
+    {
+      id: "39",
+      geocode: [12.8912982, 77.7047119],
+      popUp: "Godrej Park Retreat",
+      type: "Apartment",
+    },
+    {
+      id: "40",
+      geocode: [12.7887075, 77.7442473],
+      popUp: "Sobha Brooklyn Towers Town Park",
+      type: "Apartment",
+    },
+    {
+      id: "41",
+      geocode: [13.0546633, 77.6762302],
+      popUp: "Total Environment In That Quiet Earth",
+      type: "Apartment",
+    },
+    {
+      id: "42",
+      geocode: [12.9033084, 77.704002],
+      popUp: "Mana Capitol",
+      type: "Apartment",
+    },
+    {
+      id: "43",
+      geocode: [13.0787515, 77.6410756],
+      popUp: "Nikoo Homes IV",
+      type: "Apartment",
+    },
+    {
+      id: "44",
+      geocode: [13.0801128, 77.5842295],
+      popUp: "Govianu Madre Divina Judicial Layout",
+      type: "Apartment",
+    },
+    {
+      id: "45",
+      geocode: [12.8829781, 77.5861569],
+      popUp: "Mahaveer Grandis",
+      type: "Apartment",
+    },
+    {
+      id: "46",
+      geocode: [12.8534489, 77.8031819],
+      popUp: "Shriram Chirping Grove",
+      type: "Villa",
+    },
+    {
+      id: "47",
+      geocode: [12.8199526, 77.6590567],
+      popUp: "Mahendra Arto Helix",
+      type: "Apartment",
+    },
+    {
+      id: "48",
+      geocode: [12.9027412, 77.7192715],
+      popUp: "Abhee Silicon Shine",
+      type: "Apartment",
+    },
+    {
+      id: "49",
+      geocode: [13.0215378, 77.705724],
+      popUp: "Assetz Sun and Sanctum",
+      type: "Apartment",
+    },
+    {
+      id: "50",
+      geocode: [12.8756763, 77.7784485],
+      popUp: "The Prestige City Meridian Park",
+      type: "Apartment",
+    },
+    {
+      id: "51",
+      geocode: [12.8945784, 77.6776025],
+      popUp: "Klassik Landmark Phase 3",
+      type: "Apartment",
+    },
+    {
+      id: "52",
+      geocode: [12.8941633, 77.6940679],
+      popUp: "Brigade Gem",
+      type: "Apartment",
+    },
+    {
+      id: "53",
+      geocode: [13.0650427, 77.60939],
+      popUp: "Brigade Laguna",
+      type: "Apartment",
+    },
+    {
+      id: "54",
+      geocode: [12.8867896, 77.7674601],
+      popUp: "Abhee Kings Court",
+      type: "Apartment",
+    },
+    {
+      id: "55",
+      geocode: [13.1001794, 77.5725784],
+      popUp: "Govianu Parkview",
+      type: "Apartment",
+    },
+    {
+      id: "56",
+      geocode: [12.7902819, 77.7330669],
+      popUp: "Raj High Gardens",
+      type: "Apartment",
+    },
+    {
+      id: "57",
+      geocode: [13.0431761, 77.6420076],
+      popUp: "Kumar Prospera",
+      type: "Apartment",
+    },
+    {
+      id: "58",
+      geocode: [13.1104029, 77.7496608],
+      popUp: "Trifecta Verde En Resplandor",
+      type: "Villa",
+    },
+    {
+      id: "59",
+      geocode: [12.8628912, 77.7546379],
+      popUp: "Engrace by Modern Spaaces",
+      type: "Apartment",
+    },
+    {
+      id: "60",
+      geocode: [12.8836198, 77.7876666],
+      popUp: "Sowparnika Pragati",
+      type: "Apartment",
+    },
+    {
+      id: "61",
+      geocode: [13.1455525, 77.680148],
+      popUp: "Brigade El Dorado Krypton",
+      type: "Apartment",
+    },
+    {
+      id: "62",
+      geocode: [12.8050228, 77.6996844],
+      popUp: "Brigade Valencia",
+      type: "Apartment",
+    },
+    {
+      id: "63",
+      geocode: [12.8198982, 77.7855236],
+      popUp: "LAVIVANT",
+      type: "Villa",
+    },
+    {
+      id: "64",
+      geocode: [12.8677013, 77.5229444],
+      popUp: "Prestige Primrose Hills Phase 2",
+      type: "Apartment",
+    },
+    {
+      id: "65",
+      geocode: [12.863692, 77.759251],
+      popUp: "Soulace By Modern Spaaces",
+      type: "Villa",
+    },
+    {
+      id: "66",
+      geocode: [13.0696669, 77.5207865],
+      popUp: "The Poem by Shriram Properties",
+      type: "Apartment",
+    },
+    {
+      id: "67",
+      geocode: [13.0497961, 77.4958457],
+      popUp: "Pride Altius",
+      type: "Apartment",
+    },
+    {
+      id: "68",
+      geocode: [13.1443035, 77.6844405],
+      popUp: "Helio at Brigade El Dorado",
+      type: "Apartment",
+    },
+    {
+      id: "69",
+      geocode: [12.8004421, 77.7855862],
+      popUp: "Sowparnika Life On The Green",
+      type: "Villa",
+    },
+    {
+      id: "70",
+      geocode: [12.8677787, 77.8009707],
+      popUp: "Divine Meadows",
+      type: "Villa",
+    },
+    {
+      id: "71",
+      geocode: [13.0424602, 77.5392648],
+      popUp: "Govianu HMT",
+      type: "Apartment",
+    },
+    {
+      id: "72",
+      geocode: [12.7442062, 77.4861431],
+      popUp: "Svamitva Terravana",
+      type: "Apartment & Villa",
+    },
+    {
+      id: "73",
+      geocode: [12.8374783, 77.732155],
+      popUp: "Mahidhara Harmony",
+      type: "Villa",
+    },
+    {
+      id: "74",
+      geocode: [13.1466791, 77.6380116],
+      popUp: "Godrej Aqua",
+      type: "Apartment",
+    },
+    {
+      id: "75",
+      geocode: [12.8892255, 77.7907485],
+      popUp: "36 Park Avenue",
+      type: "Land",
+    },
+    {
+      id: "76",
+      geocode: [13.0642683, 77.6341299],
+      popUp: "Purva Atmosphere",
+      type: "Apartment",
+    },
+    {
+      id: "77",
+      geocode: [12.8261642, 77.7068655],
+      popUp: "Mahendra Aarya",
+      type: "Apartment",
+    },
+    {
+      id: "78",
+      geocode: [12.9889235, 77.619344],
+      popUp: "Elegant Hermitage",
+      type: "Apartment",
+    },
+    {
+      id: "79",
+      geocode: [13.0933503, 77.5603726],
+      popUp: "Arvind Bel Air",
+      type: "Apartment",
+    },
+    {
+      id: "80",
+      geocode: [13.1575777, 77.6300674],
+      popUp: "Purva Zenium 2",
+      type: "Apartment",
+    },
+    {
+      id: "81",
+      geocode: [13.0710778, 77.7524916],
+      popUp: "Shriram Green Field Phase 2",
+      type: "Apartment",
+    },
+    {
+      id: "82",
+      geocode: [12.91274, 77.5524577],
+      popUp: "Brigade Komarla Heights",
+      type: "Apartment",
+    },
+    {
+      id: "83",
+      geocode: [12.8694715, 77.6224258],
+      popUp: "Suraksha Heritage Park",
+      type: "Apartment",
+    },
+    {
+      id: "84",
+      geocode: [13.019061, 77.7039127],
+      popUp: "Casagrand Meridian",
+      type: "Apartment",
+    },
+    {
+      id: "85",
+      geocode: [13.0559606, 77.6612096],
+      popUp: "Rohan Upavan",
+      type: "Apartment",
+    },
+    {
+      id: "86",
+      geocode: [13.1043033, 77.5562243],
+      popUp: "Shriram Solitaire",
+      type: "Apartment",
+    },
+    {
+      id: "87",
+      geocode: [13.0707293, 77.7464068],
+      popUp: "Shriram Wyt Field",
+      type: "Apartment",
+    },
+    {
+      id: "88",
+      geocode: [12.8562613, 77.8019922],
+      popUp: "Sowparnika Olivia Nest",
+      type: "Apartment",
+    },
+    {
+      id: "89",
+      geocode: [13.1480901, 77.6169155],
+      popUp: "Mahaveer Celesse",
+      type: "Apartment",
+    },
+    {
+      id: "90",
+      geocode: [12.9094984, 77.511861],
+      popUp: "Vijaya Luxo",
+      type: "Apartment",
+    },
+    {
+      id: "91",
+      geocode: [12.8876437, 77.4522756],
+      popUp: "Brigade Horizon",
+      type: "Apartment",
+    },
+    {
+      id: "92",
+      geocode: [12.8674062, 77.5251946],
+      popUp: "Casagrand Zaiden",
+      type: "Apartment",
+    },
+    {
+      id: "93",
+      geocode: [13.1464084, 77.6812122],
+      popUp: "Provident Ecopolitan",
+      type: "Apartment",
+    },
+    {
+      id: "94",
+      geocode: [12.8677013, 77.5229444],
+      popUp: "Prestige Primrose Hills",
+      type: "Apartment",
+    },
+    {
+      id: "95",
+      geocode: [13.2120617, 77.6735788],
+      popUp: "Sattva Aeropolis",
+      type: "Apartment",
+    },
+    {
+      id: "96",
+      geocode: [12.887087, 77.4686934],
+      popUp: "Provident Sunworth City",
+      type: "Apartment",
+    },
+    {
+      id: "97",
+      geocode: [13.1475287, 77.6776159],
+      popUp: "Godrej Ananda",
+      type: "Apartment",
+    },
+    {
+      id: "98",
+      geocode: [12.9658713, 77.7431072],
+      popUp: "Folium By Sumadhura Phase 2",
+      type: "Apartment",
+    },
+    {
+      id: "99",
+      geocode: [12.9881136, 77.7204696],
+      popUp: "Pursuit of a Radical Rhapsody Phase 3",
+      type: "Apartment",
+    },
+    {
+      id: "100",
+      geocode: [13.0435939, 77.6354182],
+      popUp: "Casagrand Orlena",
+      type: "Apartment",
+    },
+    {
+      id: "101",
+      geocode: [13.2048677, 77.6375447],
+      popUp: "Mahaveer Northscape",
+      type: "Apartment",
+    },
+    {
+      id: "102",
+      geocode: [12.887087, 77.4686934],
+      popUp: "Provident Sunworth",
+      type: "Apartment",
+    },
+    {
+      id: "103",
+      geocode: [12.9250338, 77.4726576],
+      popUp: "Mahaveer Highlands",
+      type: "Apartment",
+    },
+    {
+      id: "104",
+      geocode: [13.0956323, 77.6133881],
+      popUp: "Adarsh Green Phase 2",
+      type: "Apartment",
+    },
+    {
+      id: "105",
+      geocode: [12.9685898, 77.7499936],
+      popUp: "Orchid Platinum",
+      type: "Apartment",
+    },
+    {
+      id: "106",
+      geocode: [13.142661, 77.6845332],
+      popUp: "Prestige Finsbury Park Regent",
+      type: "Apartment",
+    },
+    {
+      id: "107",
+      geocode: [12.785255, 77.6866264],
+      popUp: "Abhee Pride",
+      type: "Apartment",
+    },
+    {
+      id: "108",
+      geocode: [13.1340593, 77.5822297],
+      popUp: "DS MAX Stavam",
+      type: "Apartment",
+    },
+    {
+      id: "109",
+      geocode: [13.0191615, 77.7574133],
+      popUp: "Prestige Park Grove",
+      type: "Apartment",
+    },
+    {
+      id: "110",
+      geocode: [12.8235032, 77.4105923],
+      popUp: "Sattva Ashraya",
+      type: "Apartment",
+    },
+    {
+      id: "111",
+      geocode: [13.0379981, 77.7022939],
+      popUp: "DS MAX SkyShubham",
+      type: "Apartment",
+    },
+    {
+      id: "112",
+      geocode: [13.0989386, 77.639237],
+      popUp: "DS MAX Shresta",
+      type: "Apartment",
+    },
+    {
+      id: "113",
+      geocode: [12.9821519, 77.7437044],
+      popUp: "Prestige Waterford",
+      type: "Apartment",
+    },
+    {
+      id: "114",
+      geocode: [12.8972306, 77.4369777],
+      popUp: "DS MAX Samyak",
+      type: "Apartment",
+    },
+    {
+      id: "115",
+      geocode: [12.7789463, 77.7296315],
+      popUp: "Signature Splendor",
+      type: "Apartment",
+    },
+    {
+      id: "116",
+      geocode: [12.9727246, 77.7629075],
+      popUp: "Sobha Windsor",
+      type: "Apartment",
+    },
+    {
+      id: "117",
+      geocode: [13.2366341, 77.697701],
+      popUp: "Orchid Nirvana 2.0",
+      type: "Land",
+    },
+    {
+      id: "118",
+      geocode: [12.80155527292478, 77.6798341],
+      popUp: "Grand Icon Phase 2",
+      type: "Land",
+    },
+    {
+      id: "119",
+      geocode: [12.7819657, 77.607888],
+      popUp: "Pride Vatika Phase 2",
+      type: "Apartment",
+    },
+    {
+      id: "120",
+      geocode: [13.0921546, 77.441463],
+      popUp: "DS Max Sky Sanjeevini",
+      type: "Apartment",
+    },
+    {
+      id: "121",
+      geocode: [13.0352048, 77.7020425],
+      popUp: "DS MAX Sovereign",
+      type: "Apartment",
+    },
+    {
+      id: "122",
+      geocode: [13.2663539, 77.6710565],
+      popUp: "Century Seasons",
+      type: "Land",
+    },
+    {
+      id: "123",
+      geocode: [13.0296131, 77.7521515],
+      popUp: "Sarang By Sumadhura Phase I",
+      type: "Apartment",
+    },
+    {
+      id: "124",
+      geocode: [12.7792812, 77.7141946],
+      popUp: "DS MAX Sukruth",
+      type: "Apartment",
+    },
+    {
+      id: "125",
+      geocode: [12.6933327, 77.7038367],
+      popUp: "Abhee Srishti Layout",
+      type: "Land",
+    },
+    {
+      id: "126",
+      geocode: [12.9720284, 77.7498851],
+      popUp: "SKAV Grande",
+      type: "Apartment",
+    },
+    {
+      id: "127",
+      geocode: [13.0331458, 77.9579609],
+      popUp: "Concorde Equity",
+      type: "Land",
+    },
+    {
+      id: "128",
+      geocode: [12.8658601, 77.5262588],
+      popUp: "Mantri Courtyard",
+      type: "Villa",
+    },
+    {
+      id: "129",
+      geocode: [12.9897646, 77.788966],
+      popUp: "Birla Alokya",
+      type: "Villa & Apartment",
+    },
+    {
+      id: "130",
+      geocode: [12.852724, 77.60025],
+      popUp: "SNN Raj Viviente",
+      type: "Villa",
+    },
+    {
+      id: "131",
+      geocode: [12.7614268, 77.7002715],
+      popUp: "Grand La Vasa",
+      type: "Villa",
+    },
+    {
+      id: "132",
+      geocode: [12.9489801, 77.7736182],
+      popUp: "SLN Vogue",
+      type: "Villa",
+    },
+    {
+      id: "133",
+      geocode: [13.1493482, 77.6422646],
+      popUp: "Earth and Essence",
+      type: "Villa",
+    },
+    {
+      id: "134",
+      geocode: [13.0117106, 77.7459332],
+      popUp: "Godrej Splendour",
+      type: "Apartment",
+    },
+    {
+      id: "135",
+      geocode: [12.9841416, 77.794974],
+      popUp: "Sowparnika Ashiyana",
+      type: "Apartment",
+    },
+    {
+      id: "136",
+      geocode: [13.0170905, 77.7623756],
+      popUp: "Pavani Mirabilia",
+      type: "Apartment",
+    },
+    {
+      id: "137",
+      geocode: [12.9927675, 77.8060346],
+      popUp: "Provident Capella",
+      type: "Apartment",
+    },
+    {
+      id: "138",
+      geocode: [12.9658713, 77.7431072],
+      popUp: "Folium By Sumadhura Phase I",
+      type: "Apartment",
+    },
+    {
+      id: "139",
+      geocode: [13.1057456, 77.7751832],
+      popUp: "Terra Alegria",
+      type: "Villa",
+    },
+  ];
   return (
     <div className="overflow-hidden">
-      <div className="h-full">
-        <Hero />
-      </div>
-      <div className="h-full">
-        <Features />
-      </div>
-      <div className="h-full">
-        <Process />
-      </div>
-      <div className="h-full">
-        <Comparison />
-      </div>
-      <div className="h-full">
-        <Testimonials />
-      </div>
-      <div className="h-full">
-        <Form />
-      </div>
-      <div className="h-full">
-        <Footer />
+      <div className="h-full overflow-hidden">
+        <MapView properties={properties} />
       </div>
     </div>
   );
