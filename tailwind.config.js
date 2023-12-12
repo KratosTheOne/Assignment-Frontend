@@ -10,6 +10,12 @@ export default {
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
+    screens: {
+      sm: { min: "0px", max: "600px" },
+      pr: { min: "601px", max: "900px" },
+      ld: { min: "901px", max: "1279px" },
+      lg: { min: "1280px" },
+    },
     extend: {},
   },
   plugins: [flowbitePlugin],
