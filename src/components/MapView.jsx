@@ -182,7 +182,7 @@ const MapView = ({ properties }) => {
             placeholder="Search by property name or micromarket"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="border border-black rounded-2xl w-full h-full"
+            className="border border-black rounded-2xl w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
           />
         </div>
         <div className="flex lg:w-full ld:w-[60%] pr:w-full sm:w-full lg:space-x-20 ld:space-x-6 pr:space-x-10 sm:space-x-6 lg:justify-between ld:justify-between pr:justify-between sm:justify-between">
