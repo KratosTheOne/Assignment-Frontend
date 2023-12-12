@@ -176,7 +176,7 @@ const MapView = ({ properties }) => {
   return (
     <div className="flex flex-col justify-between max-w-[84rem] mx-auto text-center px-6 py-3 mt-2">
       <div className="flex sm:flex-col pr:flex-col lg:space-x-10 ld:space-x-8 mb-6 w-full sm:space-y-4 pr:space-y-4">
-        <div className="lg:w-[35%] ld:w-[40%] pr:w-full sm:w-full">
+        <div className="lg:w-[36%] ld:w-[40%] pr:w-full sm:w-full">
           <input
             type="text"
             placeholder="Search by property name or micromarket"
