@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import PropTypes from "prop-types";
 import markerImage from "../assets/marker.png";
-import MultipleSelect from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -49,7 +49,7 @@ const areaOptions = [
   { value: "West", label: "West" },
 ];
 
-const micromarketOptions = [
+/*const micromarketOptions = [
   "Anekal",
   "Attibele",
   "Bagaluru",
@@ -142,6 +142,7 @@ const micromarketOptions = [
   "Yashwantpur",
   "Yamare",
 ];
+*/
 
 const getMarkerIcon = (typeOptions, availabilityOptions) => {
   switch (typeOptions) {
@@ -165,33 +166,22 @@ const getMarkerIcon = (typeOptions, availabilityOptions) => {
 const MapView = ({ properties }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProperties, setFilteredProperties] = useState(properties);
-
-  const [selectedTypes, setSelectedTypes] = useState(["All"]);
-  const [selectedAvailability, setSelectedAvailability] = useState(["All"]);
-  const [selectedAreas, setSelectedAreas] = useState(["All"]);
+  const [selectedType, setSelectedType] = useState("All");
+  const [selectedAvailability, setSelectedAvailability] = useState("All");
+  const [selectedArea, setSelectedArea] = useState("All");
 
   const handleSearchAndFilter = () => {
     const filtered = properties.filter((property) => {
       const matchesType =
-        selectedTypes.length === 0 ||
-        selectedTypes.includes("All") ||
-        selectedTypes.includes(property.asset_type);
+        selectedType === "All" || property.asset_type === selectedType;
       const matchesAvailability =
-        selectedAvailability.length === 0 ||
-        selectedAvailability.includes("All") ||
-        selectedAvailability.includes(property.availability);
+        selectedAvailability === "All" ||
+        property.availability === selectedAvailability;
       const matchesArea =
-        selectedAreas.length === 0 ||
-        selectedAreas.includes("All") ||
-        selectedAreas.includes(property.area);
+        selectedArea === "All" || property.area === selectedArea;
       const matchesSearch =
         searchQuery === "" ||
-        property.popUp.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        micromarketOptions.some(
-          (micromarket) =>
-            micromarket.toLowerCase() === searchQuery.toLowerCase() &&
-            micromarket.toLowerCase() === property.micromarket.toLowerCase()
-        );
+        property.popUp.toLowerCase().includes(searchQuery.toLowerCase());
 
       return matchesType && matchesAvailability && matchesArea && matchesSearch;
     });
@@ -200,7 +190,7 @@ const MapView = ({ properties }) => {
 
   useEffect(() => {
     handleSearchAndFilter();
-  }, [searchQuery, selectedTypes, selectedAvailability, selectedAreas]);
+  }, [searchQuery, selectedType, selectedAvailability, selectedArea]);
 
   return (
     <div className="flex flex-col justify-between text-center mt-2">
@@ -208,7 +198,7 @@ const MapView = ({ properties }) => {
         <div className="lg:w-[36%] ld:w-[40%] pr:w-full sm:w-full">
           <input
             type="text"
-            placeholder="Search by property name or micromarket"
+            placeholder="Search by property name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border-[#D1D1D1] border-2 rounded-xl w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
@@ -220,20 +210,17 @@ const MapView = ({ properties }) => {
             className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40"
           >
             <InputLabel>Type</InputLabel>
-            <MultipleSelect
-              multiple
-              value={selectedTypes}
-              onChange={(e) => setSelectedTypes(e.target.value)}
-              renderValue={(selected) =>
-                selected.length === 0 ? "All" : selected.join(", ")
-              }
+            <Select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              label="Type"
             >
               {typeOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
-            </MultipleSelect>
+            </Select>
           </FormControl>
 
           <FormControl
@@ -241,20 +228,17 @@ const MapView = ({ properties }) => {
             className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40"
           >
             <InputLabel>Availability</InputLabel>
-            <MultipleSelect
-              multiple
+            <Select
               value={selectedAvailability}
               onChange={(e) => setSelectedAvailability(e.target.value)}
-              renderValue={(selected) =>
-                selected.length === 0 ? "All" : selected.join(", ")
-              }
+              label="Availability"
             >
               {availabilityOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
-            </MultipleSelect>
+            </Select>
           </FormControl>
 
           <FormControl
@@ -262,28 +246,25 @@ const MapView = ({ properties }) => {
             className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40"
           >
             <InputLabel>Area</InputLabel>
-            <MultipleSelect
-              multiple
-              value={selectedAreas}
-              onChange={(e) => setSelectedAreas(e.target.value)}
-              renderValue={(selected) =>
-                selected.length === 0 ? "All" : selected.join(", ")
-              }
+            <Select
+              value={selectedArea}
+              onChange={(e) => setSelectedArea(e.target.value)}
+              label="Area"
             >
               {areaOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
-            </MultipleSelect>
+            </Select>
           </FormControl>
           <button
             className="text-[#F4744C] border border-[#F4744C] lg:text-base ld:text-base pr:text-base sm:text-base lg:font-bold ld:font-bold pr:font-bold sm:font-bold lg:px-8 ld:px-4 pr:px-6 sm:px-4 rounded-full w-[11rem] justify-center"
             onClick={() => {
               setSearchQuery("");
-              setSelectedTypes(["All"]);
-              setSelectedAvailability(["All"]);
-              setSelectedAreas(["All"]);
+              setSelectedType("All");
+              setSelectedAvailability("All");
+              setSelectedArea("All");
             }}
           >
             Clear Filters
@@ -315,36 +296,47 @@ const MapView = ({ properties }) => {
               icon={markerIcon}
             >
               <Popup className="w-auto">
-                <div>
-                  <strong>Name:- {property.popUp}</strong>
-                </div>
-                <div>
-                  <strong>Rera Id:- </strong>
-                  {property.rera_id}
-                </div>
-                <div>
-                  <strong>Type:- </strong>
-                  {property.asset_type}
-                </div>
-                <div>
-                  <strong>Availability:- </strong>
-                  {property.availability}
-                </div>
-                <div>
-                  <strong>Price in Sq/feet:- </strong>
-                  {property.price_Sq}
-                </div>
-                <div>
-                  <strong>Area:- </strong>
-                  {property.area}
-                </div>
-                <div>
-                  <strong>Micromarket:- </strong>
-                  {property.micromarket}
-                </div>
-                <div>
-                  <strong>Developer:- </strong>
-                  {property.developer}
+                <div className="p-3 bg-white rounded-xl w-auto">
+                  <div className="flex items-center space-x-2">
+                    <span
+                      className={`text-xs font-medium px-2 py-1 rounded-full ${
+                        property.availability === "Available"
+                          ? "bg-green-700 text-white"
+                          : "bg-red-700 text-white"
+                      }`}
+                    >
+                      {property.availability}
+                    </span>
+                    <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
+                    <span className="text-xs font-semibold text-gray-500">
+                      {property.asset_type}
+                    </span>
+                  </div>
+                  <div className="mt-2 flex space-x-12">
+                    <span className="text-sm font-bold w-[8rem] flex justify-start">
+                      {property.popUp}
+                    </span>
+                    <span className="text-sm font-bold flex justify-end">
+                      Rs. {property.price_Sq}/sqft
+                    </span>
+                  </div>
+                  <div className="mt-1 text-gray-600 text-xs font-semibold">
+                    by {property.developer}
+                  </div>
+                  <div className="mt-3 flex space-x-12 font-medium">
+                    <div className="text-gray-600 text-xs w-[8rem]">
+                      Area <br />
+                      <span className="text-xs font-black">
+                        {property.area}
+                      </span>
+                    </div>
+                    <div className="text-gray-600 text-xs">
+                      Micromarket <br />
+                      <span className="text-xs font-black">
+                        {property.micromarket}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </Popup>
             </Marker>
