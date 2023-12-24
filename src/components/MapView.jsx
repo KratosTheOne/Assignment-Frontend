@@ -170,6 +170,12 @@ const MapView = ({ properties }) => {
   const [selectedAvailability, setSelectedAvailability] = useState("All");
   const [selectedArea, setSelectedArea] = useState("All");
 
+  const areFiltersApplied =
+    selectedType !== "All" ||
+    selectedAvailability !== "All" ||
+    selectedArea !== "All" ||
+    searchQuery !== "";
+
   const handleSearchAndFilter = () => {
     const filtered = properties.filter((property) => {
       const matchesType =
@@ -194,26 +200,26 @@ const MapView = ({ properties }) => {
 
   return (
     <div className="flex flex-col justify-between text-center mt-2">
-      <div className="flex sm:flex-col pr:flex-col lg:space-x-10 ld:space-x-8 mb-2 w-full sm:space-y-4 pr:space-y-4 max-w-[84rem] mx-auto px-3 py-3">
-        <div className="lg:w-[36%] ld:w-[40%] pr:w-full sm:w-full">
+      <div className="flex sm:flex-col pr:flex-col lg:space-x-4 ld:space-x-8 mb-2 w-full sm:space-y-4 pr:space-y-4 max-w-[84rem] mx-auto px-3 py-3">
+        <div className="lg:w-[50%] ld:w-[40%] pr:w-full sm:w-full">
           <input
             type="text"
             placeholder="Search by property name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="border-[#D1D1D1] border-2 rounded-xl w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
+            className="border border-[#C4C4C4] rounded-md w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
           />
         </div>
-        <div className="flex lg:w-full ld:w-[60%] pr:w-full sm:w-full lg:space-x-20 ld:space-x-6 pr:space-x-10 sm:space-x-6 lg:justify-between ld:justify-between pr:justify-between sm:justify-between">
-          <FormControl
-            variant="standard"
-            className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40"
-          >
+        <div className="flex lg:w-full ld:w-[60%] pr:w-full sm:w-full lg:space-x-4 ld:space-x-6 pr:space-x-10 sm:space-x-6 ld:justify-between pr:justify-between sm:justify-between">
+          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
             <InputLabel>Type</InputLabel>
             <Select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
               label="Type"
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              autoWidth
             >
               {typeOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -223,15 +229,15 @@ const MapView = ({ properties }) => {
             </Select>
           </FormControl>
 
-          <FormControl
-            variant="standard"
-            className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40"
-          >
+          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
             <InputLabel>Availability</InputLabel>
             <Select
               value={selectedAvailability}
               onChange={(e) => setSelectedAvailability(e.target.value)}
               label="Availability"
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              autoWidth
             >
               {availabilityOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -241,15 +247,15 @@ const MapView = ({ properties }) => {
             </Select>
           </FormControl>
 
-          <FormControl
-            variant="standard"
-            className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40"
-          >
+          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
             <InputLabel>Area</InputLabel>
             <Select
               value={selectedArea}
               onChange={(e) => setSelectedArea(e.target.value)}
               label="Area"
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              autoWidth
             >
               {areaOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -258,17 +264,19 @@ const MapView = ({ properties }) => {
               ))}
             </Select>
           </FormControl>
-          <button
-            className="text-[#F4744C] border border-[#F4744C] lg:text-base ld:text-base pr:text-base sm:text-base lg:font-bold ld:font-bold pr:font-bold sm:font-bold lg:px-8 ld:px-4 pr:px-6 sm:px-4 rounded-full w-[11rem] justify-center"
-            onClick={() => {
-              setSearchQuery("");
-              setSelectedType("All");
-              setSelectedAvailability("All");
-              setSelectedArea("All");
-            }}
-          >
-            Clear Filters
-          </button>
+          {areFiltersApplied && (
+            <button
+              className="text-[#F4744C] lg:text-sm ld:text-base pr:text-sm sm:text-sm lg:font-bold ld:font-bold pr:font-bold sm:font-bold lg:px-1 ld:px-4 pr:px-6 sm:px-4 rounded-full w-[6rem] justify-center"
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedType("All");
+                setSelectedAvailability("All");
+                setSelectedArea("All");
+              }}
+            >
+              Clear Filters
+            </button>
+          )}
         </div>
       </div>
 
@@ -296,7 +304,7 @@ const MapView = ({ properties }) => {
               icon={markerIcon}
             >
               <Popup className="w-auto">
-                <div className="p-3 bg-white rounded-xl w-auto">
+                <div className="p-3 rounded-xl w-auto">
                   <div className="flex items-center space-x-2">
                     <span
                       className={`text-xs font-medium px-2 py-1 rounded-full ${
@@ -326,13 +334,13 @@ const MapView = ({ properties }) => {
                   <div className="mt-3 flex space-x-12 font-medium">
                     <div className="text-gray-600 text-xs w-[8rem]">
                       Area <br />
-                      <span className="text-xs font-black">
+                      <span className="text-sm font-black">
                         {property.area}
                       </span>
                     </div>
                     <div className="text-gray-600 text-xs">
                       Micromarket <br />
-                      <span className="text-xs font-black">
+                      <span className="text-sm font-black">
                         {property.micromarket}
                       </span>
                     </div>
