@@ -1,5 +1,5 @@
 import MapView from "../components/MapView";
-import { properties } from "../utils/properties_numeric_ids";
+import { properties } from "../utils/filtered_properties_data";
 
 const Home = () => {
   return (

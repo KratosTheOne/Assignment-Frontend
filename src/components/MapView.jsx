@@ -37,7 +37,8 @@ const availabilityOptions = [
   { value: "All", label: "All" },
   { value: "Available", label: "Available" },
   { value: "Sold Out", label: "Sold Out" },
-  { value: "Pre Launch", label: "Pre Launch" },
+  { value: "Selling Fast", label: "Selling Fast" },
+  { value: "Limited Available", label: "Limited Available" },
 ];
 
 const areaOptions = [
@@ -49,100 +50,14 @@ const areaOptions = [
   { value: "West", label: "West" },
 ];
 
-/*const micromarketOptions = [
-  "Anekal",
-  "Attibele",
-  "Bagaluru",
-  "Banashankari",
-  "Banaswadi",
-  "Bannerghatta Road",
-  "Begur Road",
-  "Bellahalli",
-  "Bellary Road",
-  "Bommasandra",
-  "Budigere Cross",
-  "Byatarayanapura",
-  "Chandapura",
-  "Channasandra",
-  "Chikkavaderapura",
-  "Chikka Tirupati",
-  "Chokkanahalli",
-  "Choodasandra",
-  "Cunningham Rd",
-  "Devanahalli",
-  "Doddabanahalli",
-  "Electronic City",
-  "Electronic City Phase 2",
-  "Geddalahalli",
-  "Gopasandra",
-  "Gunjur",
-  "Gudnahalli",
-  "Harlur",
-  "Hebbal",
-  "Hennur Main Rd",
-  "Hosa Road",
-  "Hosahalli",
-  "Hoskote",
-  "Hosur Road",
-  "HSR Layout",
-  "Hulimavu",
-  "Indiranagar",
-  "ITPL",
-  "Itangur",
-  "J P Nagar",
-  "Jakkur Road",
-  "Jalahalli",
-  "Jigala",
-  "K R Puram",
-  "Kadugodi",
-  "Kaggalipur",
-  "Kanakapura Road",
-  "Kengeri",
-  "Kithiganur",
-  "Kodigehalli",
-  "Kommasandra",
-  "Koramangala",
-  "Kogilu",
-  "Lal Bagh Road",
-  "Magadi Main Rd",
-  "Malur",
-  "Marathahalli Road",
-  "Medihalli",
-  "M G Road",
-  "Muthsandra",
-  "Mysore Road",
-  "New Int Airport Road",
-  "Panathur Main Road",
-  "Padmanabhanagara",
-  "Rajaji Nagar",
-  "Rajanukunte",
-  "Rajarajeshwari Nagar",
-  "RMV 2nd Stage",
-  "RMV Extension",
-  "Sathanur",
-  "Sarjapur",
-  "Sarjapur Road",
-  "Sheshadripuram",
-  "Shettigere",
-  "Sompura",
-  "South",
-  "Thanisandra Rd",
-  "Thambu Chetty Palya",
-  "Thirumenahalli",
-  "Thirupalaya",
-  "Tumkur Road",
-  "Tyayakana Halli",
-  "Uttarahalli",
-  "Vajarahalli",
-  "Varthur",
-  "Vijaynagar",
-  "Whitefield",
-  "Yelahanka",
-  "Yelahanka New Town",
-  "Yashwantpur",
-  "Yamare",
+const handoverYearOptions = [
+  { value: "All", label: "All" },
+  // Generate years from 2022 to 2033
+  ...Array.from({ length: 12 }, (_, i) => ({
+    value: (2022 + i).toString(),
+    label: (2022 + i).toString(),
+  })),
 ];
-*/
 
 const getMarkerIcon = (typeOptions, availabilityOptions) => {
   switch (typeOptions) {
@@ -169,11 +84,13 @@ const MapView = ({ properties }) => {
   const [selectedType, setSelectedType] = useState("All");
   const [selectedAvailability, setSelectedAvailability] = useState("All");
   const [selectedArea, setSelectedArea] = useState("All");
+  const [selectedHandoverYear, setSelectedHandoverYear] = useState("All");
 
   const areFiltersApplied =
     selectedType !== "All" ||
     selectedAvailability !== "All" ||
     selectedArea !== "All" ||
+    selectedHandoverYear !== "All" ||
     searchQuery !== "";
 
   const handleSearchAndFilter = () => {
@@ -185,18 +102,33 @@ const MapView = ({ properties }) => {
         property.availability === selectedAvailability;
       const matchesArea =
         selectedArea === "All" || property.area === selectedArea;
+      const matchesHandoverYear =
+        selectedHandoverYear === "All" ||
+        property.handover_year === selectedHandoverYear;
       const matchesSearch =
         searchQuery === "" ||
         property.popUp.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchesType && matchesAvailability && matchesArea && matchesSearch;
+      return (
+        matchesType &&
+        matchesAvailability &&
+        matchesArea &&
+        matchesHandoverYear &&
+        matchesSearch
+      );
     });
     setFilteredProperties(filtered);
   };
 
   useEffect(() => {
     handleSearchAndFilter();
-  }, [searchQuery, selectedType, selectedAvailability, selectedArea]);
+  }, [
+    searchQuery,
+    selectedType,
+    selectedAvailability,
+    selectedArea,
+    selectedHandoverYear,
+  ]);
 
   return (
     <div className="flex flex-col justify-between text-center mt-2">
@@ -211,6 +143,24 @@ const MapView = ({ properties }) => {
           />
         </div>
         <div className="flex lg:w-full ld:w-[60%] pr:w-full sm:w-full lg:space-x-4 ld:space-x-6 pr:space-x-10 sm:space-x-6 ld:justify-between pr:justify-between sm:justify-between">
+          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+            <InputLabel>Handover Year</InputLabel>
+            <Select
+              value={selectedHandoverYear}
+              onChange={(e) => setSelectedHandoverYear(e.target.value)}
+              label="Handover Year"
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              autoWidth
+            >
+              {handoverYearOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
             <InputLabel>Type</InputLabel>
             <Select
@@ -272,6 +222,7 @@ const MapView = ({ properties }) => {
                 setSelectedType("All");
                 setSelectedAvailability("All");
                 setSelectedArea("All");
+                setSelectedHandoverYear("All");
               }}
             >
               Clear Filters
@@ -331,11 +282,17 @@ const MapView = ({ properties }) => {
                   <div className="mt-1 text-gray-600 text-xs font-semibold">
                     by {property.developer}
                   </div>
-                  <div className="mt-3 flex space-x-12 font-medium">
-                    <div className="text-gray-600 text-xs w-[8rem]">
+                  <div className="mt-3 font-medium flex justify-between">
+                    <div className="text-gray-600 text-xs">
                       Area <br />
                       <span className="text-sm font-black">
                         {property.area}
+                      </span>
+                    </div>
+                    <div className="text-gray-600 text-xs w-[5.5rem]">
+                      Handover Year <br />
+                      <span className="text-sm font-black">
+                        {property.handover_year}
                       </span>
                     </div>
                     <div className="text-gray-600 text-xs">
