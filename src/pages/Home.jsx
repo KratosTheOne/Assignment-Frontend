@@ -1,5 +1,5 @@
 import MapView from "../components/MapView";
-import { properties } from "../utils/filtered_properties_data";
+import { properties } from "../utils/properties_data_object_literal_only_year";
 
 const Home = () => {
   return (

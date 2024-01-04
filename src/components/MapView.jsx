@@ -131,184 +131,232 @@ const MapView = ({ properties }) => {
   ]);
 
   return (
-    <div className="flex flex-col justify-between text-center mt-2">
-      <div className="flex sm:flex-col pr:flex-col lg:space-x-4 ld:space-x-8 mb-2 w-full sm:space-y-4 pr:space-y-4 max-w-[84rem] mx-auto px-3 py-3">
-        <div className="lg:w-[50%] ld:w-[40%] pr:w-full sm:w-full">
-          <input
-            type="text"
-            placeholder="Search by property name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="border border-[#C4C4C4] rounded-md w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
-          />
+    <>
+      <div className="flex flex-col justify-between text-center mt-2">
+        <div className="flex sm:flex-col pr:flex-col lg:space-x-4 ld:space-x-8 w-full sm:space-y-4 pr:space-y-4 max-w-[84rem] mx-auto px-3 py-3">
+          <div className="lg:w-[50%] ld:w-[40%] pr:w-full sm:w-full">
+            <input
+              type="text"
+              placeholder="Search by property name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border border-[#C4C4C4] rounded-md w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
+            />
+          </div>
+          <div className="flex lg:w-full ld:w-[60%] pr:w-full sm:w-full lg:space-x-4 ld:space-x-6 pr:space-x-10 sm:space-x-6 ld:justify-between pr:justify-between sm:justify-between">
+            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+              <InputLabel>Handover Year</InputLabel>
+              <Select
+                value={selectedHandoverYear}
+                onChange={(e) => setSelectedHandoverYear(e.target.value)}
+                label="Handover Year"
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                autoWidth
+              >
+                {handoverYearOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+              <InputLabel>Type</InputLabel>
+              <Select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                label="Type"
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                autoWidth
+              >
+                {typeOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+              <InputLabel>Availability</InputLabel>
+              <Select
+                value={selectedAvailability}
+                onChange={(e) => setSelectedAvailability(e.target.value)}
+                label="Availability"
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                autoWidth
+              >
+                {availabilityOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+              <InputLabel>Area</InputLabel>
+              <Select
+                value={selectedArea}
+                onChange={(e) => setSelectedArea(e.target.value)}
+                label="Area"
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                autoWidth
+              >
+                {areaOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {areFiltersApplied && (
+              <button
+                className="text-[#F4744C] lg:text-sm ld:text-base pr:text-sm sm:text-sm lg:font-bold ld:font-bold pr:font-bold sm:font-bold lg:px-1 ld:px-4 pr:px-6 sm:px-4 rounded-full w-[6rem] justify-center"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedType("All");
+                  setSelectedAvailability("All");
+                  setSelectedArea("All");
+                  setSelectedHandoverYear("All");
+                }}
+              >
+                Clear Filters
+              </button>
+            )}
+          </div>
         </div>
-        <div className="flex lg:w-full ld:w-[60%] pr:w-full sm:w-full lg:space-x-4 ld:space-x-6 pr:space-x-10 sm:space-x-6 ld:justify-between pr:justify-between sm:justify-between">
-          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
-            <InputLabel>Handover Year</InputLabel>
-            <Select
-              value={selectedHandoverYear}
-              onChange={(e) => setSelectedHandoverYear(e.target.value)}
-              label="Handover Year"
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              autoWidth
-            >
-              {handoverYearOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
 
-          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
-            <InputLabel>Type</InputLabel>
-            <Select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              label="Type"
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              autoWidth
-            >
-              {typeOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <MapContainer
+          center={[12.9716, 77.5946]}
+          zoom={10}
+          style={{ height: "500px" }}
+        >
+          <TileLayer
+            attribution="Google Maps"
+            url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+            maxZoom={20}
+            subdomains={["mt0", "mt1", "mt2", "mt3"]}
+          />
+          {filteredProperties.map((property) => {
+            const markerIcon = new Icon({
+              iconUrl: getMarkerIcon(
+                property.asset_type,
+                property.availability
+              ),
+              iconSize: [30, 30],
+            });
 
-          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
-            <InputLabel>Availability</InputLabel>
-            <Select
-              value={selectedAvailability}
-              onChange={(e) => setSelectedAvailability(e.target.value)}
-              label="Availability"
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              autoWidth
-            >
-              {availabilityOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
-            <InputLabel>Area</InputLabel>
-            <Select
-              value={selectedArea}
-              onChange={(e) => setSelectedArea(e.target.value)}
-              label="Area"
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              autoWidth
-            >
-              {areaOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {areFiltersApplied && (
-            <button
-              className="text-[#F4744C] lg:text-sm ld:text-base pr:text-sm sm:text-sm lg:font-bold ld:font-bold pr:font-bold sm:font-bold lg:px-1 ld:px-4 pr:px-6 sm:px-4 rounded-full w-[6rem] justify-center"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedType("All");
-                setSelectedAvailability("All");
-                setSelectedArea("All");
-                setSelectedHandoverYear("All");
-              }}
-            >
-              Clear Filters
-            </button>
-          )}
+            return (
+              <Marker
+                key={property.id}
+                position={property.geocode}
+                icon={markerIcon}
+              >
+                <Popup className="w-auto">
+                  <div className="p-3 rounded-xl w-auto">
+                    <div className="flex items-center space-x-2">
+                      <span
+                        className={`text-xs font-medium px-2 py-1 rounded-full ${
+                          property.availability === "Available"
+                            ? "bg-green-700 text-white"
+                            : "bg-red-700 text-white"
+                        }`}
+                      >
+                        {property.availability}
+                      </span>
+                      <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
+                      <span className="text-xs font-semibold text-gray-500">
+                        {property.asset_type}
+                      </span>
+                    </div>
+                    <div className="mt-2 flex">
+                      <span className="text-sm font-bold w-[10rem] flex justify-start">
+                        {property.popUp}
+                      </span>
+                      <span className="text-sm font-bold flex justify-end w-36">
+                        Rs. {property.price_Sq}/sqft
+                      </span>
+                    </div>
+                    <div className="mt-1 text-gray-600 text-xs font-semibold">
+                      by {property.developer}
+                    </div>
+                    <div className="mt-3 font-medium flex justify-between space-x-5 w-auto">
+                      <div className="text-gray-600 text-xs w-24">
+                        Area <br />
+                        <span className="text-sm font-black">
+                          {property.area}
+                        </span>
+                      </div>
+                      <div className="text-gray-600 text-xs w-36">
+                        Handover Year <br />
+                        <span className="text-sm font-black">
+                          {property.handover_year}
+                        </span>
+                      </div>
+                      <div className="text-gray-600 text-xs w-44">
+                        Micromarket <br />
+                        <span className="text-sm font-black">
+                          {property.micromarket}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
+        </MapContainer>
+      </div>
+      <div className="flex-col justify-start mt-1 mb-4">
+        <h6 className="font-bold flex justify-start italic text-sm mb-1">
+          NOTE:
+        </h6>
+        <p className="flex justify-start text-xs">
+          <span className="font-bold text-sm">*</span>This tool is the result of
+          extensive on-ground data collection efforts, and we strive to share
+          the most accurate information with you. We are only covering Bengaluru
+          for now.
+        </p>
+        <p className="flex justify-start text-xs mb-1">
+          <span className="font-bold text-sm">*</span>Feel free to use the above
+          tool for your research on buying new properties or share it with
+          someone who is in the process as well. You can compare prices in the
+          same area across builders, check other developments, and compare
+          across micromarkets as well.{" "}
+        </p>
+        <div className="flex space-x-10 text-xs font-medium">
+          <p>
+            1. Information will be updated on a weekly basis. Pre-launches will
+            be updated as soon as their information is public.
+          </p>
+          <p>
+            2. The information presented here is not exhaustive and is meant to
+            be used for the first level of research. Reach out to us if you have
+            any questions or need updated information.
+          </p>
+          <p>
+            3. Price per square foot is represented based on{" "}
+            <span className="font-bold italic">super built-up</span> area.
+            However, it is essential to check the RERA carpet area before making
+            a purchase.
+          </p>
+          <p>
+            4. Location may be slightly off. We are working on improving
+            accuracy.
+          </p>
+          <p>
+            5. Feel free to contact us at +91-8420566770 if you have any queries
+            or suggestions.
+          </p>
         </div>
       </div>
-
-      <MapContainer
-        center={[12.9716, 77.5946]}
-        zoom={10}
-        style={{ height: "500px" }}
-      >
-        <TileLayer
-          attribution="Google Maps"
-          url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
-          maxZoom={20}
-          subdomains={["mt0", "mt1", "mt2", "mt3"]}
-        />
-        {filteredProperties.map((property) => {
-          const markerIcon = new Icon({
-            iconUrl: getMarkerIcon(property.asset_type, property.availability),
-            iconSize: [30, 30],
-          });
-
-          return (
-            <Marker
-              key={property.id}
-              position={property.geocode}
-              icon={markerIcon}
-            >
-              <Popup className="w-auto">
-                <div className="p-3 rounded-xl w-auto">
-                  <div className="flex items-center space-x-2">
-                    <span
-                      className={`text-xs font-medium px-2 py-1 rounded-full ${
-                        property.availability === "Available"
-                          ? "bg-green-700 text-white"
-                          : "bg-red-700 text-white"
-                      }`}
-                    >
-                      {property.availability}
-                    </span>
-                    <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
-                    <span className="text-xs font-semibold text-gray-500">
-                      {property.asset_type}
-                    </span>
-                  </div>
-                  <div className="mt-2 flex space-x-12">
-                    <span className="text-sm font-bold w-[8rem] flex justify-start">
-                      {property.popUp}
-                    </span>
-                    <span className="text-sm font-bold flex justify-end">
-                      Rs. {property.price_Sq}/sqft
-                    </span>
-                  </div>
-                  <div className="mt-1 text-gray-600 text-xs font-semibold">
-                    by {property.developer}
-                  </div>
-                  <div className="mt-3 font-medium flex justify-between">
-                    <div className="text-gray-600 text-xs">
-                      Area <br />
-                      <span className="text-sm font-black">
-                        {property.area}
-                      </span>
-                    </div>
-                    <div className="text-gray-600 text-xs w-[5.5rem]">
-                      Handover Year <br />
-                      <span className="text-sm font-black">
-                        {property.handover_year}
-                      </span>
-                    </div>
-                    <div className="text-gray-600 text-xs">
-                      Micromarket <br />
-                      <span className="text-sm font-black">
-                        {property.micromarket}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MapContainer>
-    </div>
+    </>
   );
 };
 
