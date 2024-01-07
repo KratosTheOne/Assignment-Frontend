@@ -11,8 +11,6 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import villaPre from "../assets/Icon/Villa normal pre launch.svg";
 import villaNormal from "../assets/Icon/Villa normal.svg";
-import rowHousePre from "../assets/Icon/Row House Pre launch.svg";
-import rowHouseNormal from "../assets/Icon/Row House Normal.svg";
 import landPre from "../assets/Icon/Land Normal pre launch.svg";
 import landNormal from "../assets/Icon/Land Normal.svg";
 import apartmentPre from "../assets/Icon/Apartment Normal Pre launch.svg";
@@ -30,7 +28,6 @@ const typeOptions = [
   { value: "Apartment", label: "Apartment" },
   { value: "Villa", label: "Villa" },
   { value: "Land", label: "Land" },
-  { value: "Rowhouse", label: "Rowhouse" },
 ];
 
 const availabilityOptions = [
@@ -63,10 +60,6 @@ const getMarkerIcon = (typeOptions, availabilityOptions) => {
   switch (typeOptions) {
     case "Villa":
       return availabilityOptions === "Pre Launch" ? villaPre : villaNormal;
-    case "Rowhouse":
-      return availabilityOptions === "Pre Launch"
-        ? rowHousePre
-        : rowHouseNormal;
     case "Land":
       return availabilityOptions === "Pre Launch" ? landPre : landNormal;
     case "Apartment":
@@ -85,6 +78,7 @@ const MapView = ({ properties }) => {
   const [selectedAvailability, setSelectedAvailability] = useState("All");
   const [selectedArea, setSelectedArea] = useState("All");
   const [selectedHandoverYear, setSelectedHandoverYear] = useState("All");
+  const [isPreLaunchFilterActive, setIsPreLaunchFilterActive] = useState(false);
 
   const areFiltersApplied =
     selectedType !== "All" ||
@@ -108,13 +102,16 @@ const MapView = ({ properties }) => {
       const matchesSearch =
         searchQuery === "" ||
         property.popUp.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesPreLaunch =
+        !isPreLaunchFilterActive || property.stage === "Pre-Launch";
 
       return (
         matchesType &&
         matchesAvailability &&
         matchesArea &&
         matchesHandoverYear &&
-        matchesSearch
+        matchesSearch &&
+        matchesPreLaunch
       );
     });
     setFilteredProperties(filtered);
@@ -128,23 +125,34 @@ const MapView = ({ properties }) => {
     selectedAvailability,
     selectedArea,
     selectedHandoverYear,
+    isPreLaunchFilterActive,
   ]);
 
   return (
     <>
-      <div className="flex flex-col justify-between text-center mt-2">
-        <div className="flex sm:flex-col pr:flex-col lg:space-x-4 ld:space-x-8 w-full sm:space-y-4 pr:space-y-4 max-w-[84rem] mx-auto px-3 py-3">
-          <div className="lg:w-[50%] ld:w-[40%] pr:w-full sm:w-full">
+      <div className="flex flex-col justify-between text-center mt-4 items-center">
+        <div className="flex sm:flex-col pr:flex-col lg:space-x-4 ld:space-x-3 w-full sm:space-y-4 pr:space-y-4 max-w-[89rem] mx-auto px-3 py-3 mb-4">
+          <div className="flex lg:w-[60%] ld:w-[50%] pr:w-full sm:w-full justify-between space-x-3">
             <input
               type="text"
-              placeholder="Search by property name"
+              placeholder="Search by property name or developer"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="border border-[#C4C4C4] rounded-md w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
             />
+            <button
+              className={`border border-[#C4C4C4] lg:w-[26%] ld:w-[30%] pr:w-[20%] sm:w-[30%] rounded-md ${
+                isPreLaunchFilterActive ? "bg-purple-600 text-white" : ""
+              }`}
+              onClick={() => {
+                setIsPreLaunchFilterActive(!isPreLaunchFilterActive);
+              }}
+            >
+              Pre-Launch
+            </button>
           </div>
-          <div className="flex lg:w-full ld:w-[60%] pr:w-full sm:w-full lg:space-x-4 ld:space-x-6 pr:space-x-10 sm:space-x-6 ld:justify-between pr:justify-between sm:justify-between">
-            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+          <div className="flex lg:w-full ld:w-full pr:w-full sm:w-full lg:space-x-4 ld:space-x-3 pr:space-x-3 sm:space-x-3 ld:justify-between pr:justify-between sm:justify-between">
+            <FormControl className="mb-2 lg:w-[20%] ld:w-[28%] pr:w-[22%] sm:w-40">
               <InputLabel>Handover Year</InputLabel>
               <Select
                 value={selectedHandoverYear}
@@ -162,7 +170,7 @@ const MapView = ({ properties }) => {
               </Select>
             </FormControl>
 
-            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+            <FormControl className="mb-2 lg:w-[18%] ld:w-[28%] pr:w-[26%] sm:w-40">
               <InputLabel>Type</InputLabel>
               <Select
                 value={selectedType}
@@ -180,7 +188,7 @@ const MapView = ({ properties }) => {
               </Select>
             </FormControl>
 
-            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[36%] sm:w-40">
               <InputLabel>Availability</InputLabel>
               <Select
                 value={selectedAvailability}
@@ -198,7 +206,7 @@ const MapView = ({ properties }) => {
               </Select>
             </FormControl>
 
-            <FormControl className="mb-2 lg:w-[22%] ld:w-[28%] pr:w-[30%] sm:w-40">
+            <FormControl className="mb-2 lg:w-[19%] ld:w-[28%] pr:w-[24%] sm:w-40">
               <InputLabel>Area</InputLabel>
               <Select
                 value={selectedArea}
@@ -224,6 +232,7 @@ const MapView = ({ properties }) => {
                   setSelectedAvailability("All");
                   setSelectedArea("All");
                   setSelectedHandoverYear("All");
+                  setIsPreLaunchFilterActive(false);
                 }}
               >
                 Clear Filters
@@ -274,6 +283,16 @@ const MapView = ({ properties }) => {
                       <span className="text-xs font-semibold text-gray-500">
                         {property.asset_type}
                       </span>
+                      <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
+                      <span
+                        className={`text-xs font-medium px-2 py-1 rounded-full ${
+                          property.stage === "Ongoing"
+                            ? "bg-orange-600 text-white"
+                            : "bg-purple-600 text-white"
+                        }`}
+                      >
+                        {property.stage}
+                      </span>
                     </div>
                     <div className="mt-2 flex">
                       <span className="text-sm font-bold w-[10rem] flex justify-start">
@@ -313,10 +332,9 @@ const MapView = ({ properties }) => {
           })}
         </MapContainer>
       </div>
-      <div className="flex-col justify-start mt-1 mb-4">
-        <h6 className="font-bold flex justify-start italic text-sm mb-1">
-          NOTE:
-        </h6>
+      {/*
+      <div className="flex-col justify-start mt-1 mb-4 max-w-[89rem] mx-auto">
+        <h6 className="font-bold flex justify-start text-sm mb-1">Note</h6>
         <p className="flex justify-start text-xs">
           <span className="font-bold text-sm">*</span>This tool is the result of
           extensive on-ground data collection efforts, and we strive to share
@@ -330,7 +348,7 @@ const MapView = ({ properties }) => {
           same area across builders, check other developments, and compare
           across micromarkets as well.{" "}
         </p>
-        <div className="flex space-x-10 text-xs font-medium">
+        <div className="flex-col space-x-10 text-xs font-medium">
           <p>
             1. Information will be updated on a weekly basis. Pre-launches will
             be updated as soon as their information is public.
@@ -356,6 +374,7 @@ const MapView = ({ properties }) => {
           </p>
         </div>
       </div>
+      */}
     </>
   );
 };

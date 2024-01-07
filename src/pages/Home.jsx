@@ -1,10 +1,11 @@
+//import Footer from "../components/Footer";
 import MapView from "../components/MapView";
 import { properties } from "../utils/properties_data_object_literal_only_year";
 
 const Home = () => {
   return (
     <div className="overflow-hidden">
-      <div className="h-full overflow-hidden">
+      <div className="h-full overflow-hidden bg-[#F9F9FA]">
         <MapView properties={properties} />
       </div>
     </div>
@@ -12,3 +13,9 @@ const Home = () => {
 };
 
 export default Home;
+
+/**
+ * <div className="h-full overflow-hidden">
+        <Footer />
+      </div>
+ */

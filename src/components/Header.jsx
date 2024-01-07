@@ -13,8 +13,8 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-white shadow-md h-14 top-0 z-20 sticky">
-      <div className="flex max-w-[84rem] mx-auto text-center justify-between h-full px-6">
+    <div className="bg-white shadow-md h-14 top-0 z-50 sticky">
+      <div className="flex max-w-[91rem] mx-auto text-center justify-between h-full px-6">
         <div className="flex justify-center items-center">
           <img
             src={logo}
