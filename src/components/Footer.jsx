@@ -21,7 +21,7 @@ const Footer = () => {
 
   return (
     <div className="bg-white">
-      <div className="flex sm:flex-col justify-between content-center max-w-[89rem] mx-auto py-6 px-5">
+      <div className="flex sm:flex-col justify-between content-center max-w-[89rem] mx-auto py-6 px-3">
         <div className="flex flex-col space-y-8 items-start">
           <img src={logo} alt="logo" height="22" width="126" />
           <div className="flex flex-col">
@@ -80,7 +80,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="max-w-[84rem] mx-auto px-5">
+      <div className="max-w-[89rem] mx-auto px-5">
         <hr className="h-[0.10rem] bg-gray-400 mt-4"></hr>
       </div>
       <div className="flex justify-center text-center mt-4 text-sm">

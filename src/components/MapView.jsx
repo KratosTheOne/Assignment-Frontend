@@ -130,7 +130,13 @@ const MapView = ({ properties }) => {
 
   return (
     <>
-      <div className="flex flex-col justify-between text-center mt-4 items-center">
+      <div className="flex flex-col justify-between text-left mt-4 items-center">
+        <div className="flex items-start text-left w-full max-w-[89rem] mx-auto px-3 py-1">
+          <h1 className="flex-wrap">
+            Use our Interactive map feature to find the best properties in
+            Bengaluru to invest in
+          </h1>
+        </div>
         <div className="flex sm:flex-col pr:flex-col lg:space-x-4 ld:space-x-3 w-full sm:space-y-4 pr:space-y-4 max-w-[89rem] mx-auto px-3 py-3 mb-4">
           <div className="flex lg:w-[60%] ld:w-[50%] pr:w-full sm:w-full justify-between space-x-3">
             <input
@@ -141,7 +147,7 @@ const MapView = ({ properties }) => {
               className="border border-[#C4C4C4] rounded-md w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
             />
             <button
-              className={`border border-[#C4C4C4] lg:w-[26%] ld:w-[30%] pr:w-[20%] sm:w-[30%] rounded-md ${
+              className={`border border-[#C4C4C4] font-light lg:w-[26%] ld:w-[30%] pr:w-[20%] sm:w-[35%] rounded-md ${
                 isPreLaunchFilterActive ? "bg-purple-600 text-white" : ""
               }`}
               onClick={() => {
@@ -268,7 +274,7 @@ const MapView = ({ properties }) => {
                 icon={markerIcon}
               >
                 <Popup className="w-auto">
-                  <div className="p-3 rounded-xl w-auto">
+                  <div className="li-3 rounded-xl w-auto">
                     <div className="flex items-center space-x-2">
                       <span
                         className={`text-xs font-medium px-2 py-1 rounded-full ${
@@ -332,49 +338,43 @@ const MapView = ({ properties }) => {
           })}
         </MapContainer>
       </div>
-      {/*
-      <div className="flex-col justify-start mt-1 mb-4 max-w-[89rem] mx-auto">
-        <h6 className="font-bold flex justify-start text-sm mb-1">Note</h6>
-        <p className="flex justify-start text-xs">
-          <span className="font-bold text-sm">*</span>This tool is the result of
-          extensive on-ground data collection efforts, and we strive to share
-          the most accurate information with you. We are only covering Bengaluru
-          for now.
-        </p>
-        <p className="flex justify-start text-xs mb-1">
-          <span className="font-bold text-sm">*</span>Feel free to use the above
-          tool for your research on buying new properties or share it with
-          someone who is in the process as well. You can compare prices in the
-          same area across builders, check other developments, and compare
-          across micromarkets as well.{" "}
-        </p>
-        <div className="flex-col space-x-10 text-xs font-medium">
-          <p>
-            1. Information will be updated on a weekly basis. Pre-launches will
-            be updated as soon as their information is public.
-          </p>
-          <p>
-            2. The information presented here is not exhaustive and is meant to
-            be used for the first level of research. Reach out to us if you have
+
+      <div className="flex-col justify-start mt-4 mb-8 max-w-[89rem] mx-auto px-3">
+        <h6 className="font-bold flex justify-start text-base mb-1">Note</h6>
+        <ul className="list-disc px-6 text-sm space-y-1 mb-2">
+          <li>
+            This tool is the result of extensive on-ground data collection
+            efforts, and we strive to share the most accurate information with
+            you. We are only covering Bengaluru for now.
+          </li>
+          <li>
+            Feel free to use the above tool for your research on buying new
+            properties or share it with someone who is in the process as well.
+            You can compare prices in the same area across builders, check other
+            developments, and compare across micromarkets as well.{" "}
+          </li>
+        </ul>
+        <ul className="list-decimal px-5 text-sm space-y-1 mb">
+          <li>
+            Information will be updated on a weekly basis. Pre-launches will be
+            updated as soon as their information is public.
+          </li>
+          <li>
+            The information presented here is not exhaustive and is meant to be
+            used for the first level of research. Reach out to us if you have
             any questions or need updated information.
-          </p>
-          <p>
-            3. Price per square foot is represented based on{" "}
+          </li>
+          <li>
+            Price per square foot is represented based on{" "}
             <span className="font-bold italic">super built-up</span> area.
             However, it is essential to check the RERA carpet area before making
             a purchase.
-          </p>
-          <p>
-            4. Location may be slightly off. We are working on improving
-            accuracy.
-          </p>
-          <p>
-            5. Feel free to contact us at +91-8420566770 if you have any queries
-            or suggestions.
-          </p>
-        </div>
+          </li>
+          <li>
+            Location may be slightly off. We are working on improving accuracy.
+          </li>
+        </ul>
       </div>
-      */}
     </>
   );
 };
