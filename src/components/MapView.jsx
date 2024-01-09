@@ -130,6 +130,13 @@ const MapView = ({ properties }) => {
     isPreLaunchFilterActive,
   ]);
 
+  const trackPreLaunchClick = () => {
+    ReactGA.event({
+      category: "User",
+      action: "Clicked Pre-Launch Button",
+    });
+  };
+
   return (
     <>
       <div className="flex flex-col justify-between text-left mt-4 items-center">
@@ -154,6 +161,7 @@ const MapView = ({ properties }) => {
               }`}
               onClick={() => {
                 setIsPreLaunchFilterActive(!isPreLaunchFilterActive);
+                trackPreLaunchClick();
               }}
             >
               Pre-Launch
