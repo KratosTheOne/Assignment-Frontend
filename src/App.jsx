@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import ReactGA from "react-ga";
 
-ReactGA.initialize("G-KBPXH9PKNJ");
+ReactGA.initialize("G-G1GGX94PYG");
 
 function App() {
   return (
