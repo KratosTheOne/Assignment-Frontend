@@ -59,11 +59,11 @@ const handoverYearOptions = [
 const getMarkerIcon = (typeOptions, availabilityOptions) => {
   switch (typeOptions) {
     case "Villa":
-      return availabilityOptions === "Pre Launch" ? villaPre : villaNormal;
+      return availabilityOptions === "Pre-Launch" ? villaPre : villaNormal;
     case "Land":
-      return availabilityOptions === "Pre Launch" ? landPre : landNormal;
+      return availabilityOptions === "Pre-Launch" ? landPre : landNormal;
     case "Apartment":
-      return availabilityOptions === "Pre Launch"
+      return availabilityOptions === "Pre-Launch"
         ? apartmentPre
         : apartmentNormal;
     default:

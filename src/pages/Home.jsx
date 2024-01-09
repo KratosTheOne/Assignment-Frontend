@@ -1,7 +1,7 @@
 //import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";
 import MapView from "../components/MapView";
-import { properties } from "../utils/properties_data_object_literal_only_year";
+import { properties } from "../utils/adjusted_converted_properties_data";
 
 const Home = () => {
   return (
