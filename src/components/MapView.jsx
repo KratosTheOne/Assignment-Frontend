@@ -138,7 +138,7 @@ const MapView = ({ properties }) => {
           </h1>
         </div>
         <div className="flex sm:flex-col pr:flex-col lg:space-x-4 ld:space-x-3 w-full sm:space-y-4 pr:space-y-4 max-w-[89rem] mx-auto px-3 py-3 mb-4">
-          <div className="flex lg:w-[60%] ld:w-[50%] pr:w-full sm:w-full justify-between space-x-3">
+          <div className="flex lg:w-[60%] ld:w-[60%] pr:w-full sm:w-full justify-between space-x-3">
             <input
               type="text"
               placeholder="Search by property name or developer"
