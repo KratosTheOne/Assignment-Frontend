@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import "./App.css";
 import Home from "./pages/Home";
@@ -8,13 +8,10 @@ import ReactGA from "react-ga4";
 const trackingId = import.meta.env.VITE_GA_MEASUREMENT_ID; // Use environment variable
 
 const App = () => {
-  const location = useLocation();
-
   useEffect(() => {
     ReactGA.initialize(trackingId);
-    const currentPath = location.pathname + location.search;
-    ReactGA.send({ hitType: "pageview", page: currentPath });
-  }, [location]);
+    ReactGA.send({ hitType: "pageview", page: "/mapview" });
+  }, []);
 
   return (
     <div className="App">
