@@ -15,7 +15,7 @@ import landPre from "../assets/Icon/Land Normal pre launch.svg";
 import landNormal from "../assets/Icon/Land Normal.svg";
 import apartmentPre from "../assets/Icon/Apartment Normal Pre launch.svg";
 import apartmentNormal from "../assets/Icon/Apartment Normal.svg";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 /*
 const customIcon = new Icon({
@@ -119,7 +119,7 @@ const MapView = ({ properties }) => {
   };
 
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.send({ hitType: "pageview", page: "/mapview" });
     handleSearchAndFilter();
   }, [
     searchQuery,

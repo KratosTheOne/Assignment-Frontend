@@ -2,9 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Header from "./components/Header";
-import ReactGA from "react-ga";
+import ReactGA from 'react-ga4';
 
-ReactGA.initialize("G-G1GGX94PYG");
+const trackingId = "G-G1GGX94PYG";
+
+ReactGA.initialize(trackingId);
 
 function App() {
   return (
