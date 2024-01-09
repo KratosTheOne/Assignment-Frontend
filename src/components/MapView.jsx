@@ -119,7 +119,6 @@ const MapView = ({ properties }) => {
   };
 
   useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: "/mapview" });
     handleSearchAndFilter();
   }, [
     searchQuery,

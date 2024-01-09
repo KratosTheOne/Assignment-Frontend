@@ -1,14 +1,21 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import Header from "./components/Header";
-import ReactGA from 'react-ga4';
+import ReactGA from "react-ga4";
 
-const trackingId = "G-G1GGX94PYG";
+const trackingId = import.meta.env.VITE_GA_MEASUREMENT_ID; // Use environment variable
 
-ReactGA.initialize(trackingId);
+const App = () => {
+  const location = useLocation();
 
-function App() {
+  useEffect(() => {
+    ReactGA.initialize(trackingId);
+    const currentPath = location.pathname + location.search;
+    ReactGA.send({ hitType: "pageview", page: currentPath });
+  }, [location]);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -19,6 +26,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
