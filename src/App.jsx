@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Header from "./components/Header";
+import ReactGA from "react-ga";
+
+ReactGA.initialize("G-KBPXH9PKNJ");
 
 function App() {
   return (
