@@ -35,7 +35,7 @@ const Header = () => {
           className="text-sm font-bold cursor-pointer flex items-center justify-center"
           onClick={handlePhoneClick}
         >
-          <div className="flex text-center items-center justify-between space-x-2">
+          <div className="flex text-center items-center justify-between space-x-4 sm:space-x-3">
             <div className="">
               <div className="flex items-center border border-[#F54C1E] rounded-md px-3 py-2 sm:px-2 sm:py-2">
                 <div
