@@ -1,7 +1,7 @@
 //import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";
 import MapView from "../components/MapView";
-import { properties } from "../utils/adjusted_converted_properties_data";
+import { properties } from "../utils/converted_properties_data_updated";
 
 const Home = () => {
   return (
