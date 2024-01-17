@@ -2,19 +2,20 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Icon } from "leaflet";
+//import { Icon } from "leaflet";
+import { divIcon } from "leaflet";
 import PropTypes from "prop-types";
-import markerImage from "../assets/marker.png";
+//import markerImage from "../assets/marker.png";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import villaPre from "../assets/Icon/Villa normal pre launch.svg";
-import villaNormal from "../assets/Icon/Villa normal.svg";
-import landPre from "../assets/Icon/Land Normal pre launch.svg";
-import landNormal from "../assets/Icon/Land Normal.svg";
-import apartmentPre from "../assets/Icon/Apartment Normal Pre launch.svg";
-import apartmentNormal from "../assets/Icon/Apartment Normal.svg";
+//import villaPre from "../assets/Icon/Villa normal pre launch.svg";
+//import villaNormal from "../assets/Icon/Villa normal.svg";
+//import landPre from "../assets/Icon/Land Normal pre launch.svg";
+//import landNormal from "../assets/Icon/Land Normal.svg";
+//import apartmentPre from "../assets/Icon/Apartment Normal Pre launch.svg";
+//import apartmentNormal from "../assets/Icon/Apartment Normal.svg";
 import ReactGA from "react-ga4";
 
 /*
@@ -57,7 +58,21 @@ const handoverYearOptions = [
   })),
 ];
 
-const getMarkerIcon = (typeOptions, availabilityOptions) => {
+const getMarkerIcon = (asset_type, availability, price) => {
+  const iconHtml = `
+    <div class="bg-red-800 text-white rounded-full text-xs w-auto flex justify-center text-center px-4 py-1">
+      ${price}
+    </div>
+  `;
+
+  return divIcon({
+    html: iconHtml,
+    className: "custom-marker",
+    iconSize: [30, 30],
+  });
+};
+
+/*const getMarkerIcon = (typeOptions, availabilityOptions) => {
   switch (typeOptions) {
     case "Villa":
       return availabilityOptions === "Pre-Launch" ? villaPre : villaNormal;
@@ -71,6 +86,7 @@ const getMarkerIcon = (typeOptions, availabilityOptions) => {
       return markerImage;
   }
 };
+*/
 
 const MapView = ({ properties }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -268,75 +284,82 @@ const MapView = ({ properties }) => {
             subdomains={["mt0", "mt1", "mt2", "mt3"]}
           />
           {filteredProperties.map((property) => {
-            const markerIcon = new Icon({
-              iconUrl: getMarkerIcon(
-                property.asset_type,
-                property.availability
-              ),
-              iconSize: [30, 30],
-            });
+            const {
+              id,
+              geocode,
+              popUp,
+              asset_type,
+              availability,
+              area,
+              micromarket,
+              price_Sq,
+              price_k,
+              stage,
+              handover_year,
+              developer,
+            } = property;
+
+            const markerIcon = getMarkerIcon(
+              asset_type,
+              availability,
+              `${price_k}`
+            );
 
             return (
-              <Marker
-                key={property.id}
-                position={property.geocode}
-                icon={markerIcon}
-              >
+              <Marker key={id} position={geocode} icon={markerIcon}>
                 <Popup className="w-auto">
                   <div className="li-3 rounded-xl w-auto">
                     <div className="flex items-center space-x-2">
                       <span
                         className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          property.availability === "Available"
+                          availability === "Available"
                             ? "bg-green-700 text-white"
                             : "bg-red-700 text-white"
                         }`}
                       >
-                        {property.availability}
+                        {availability}
                       </span>
                       <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
                       <span className="text-xs font-semibold text-gray-500">
-                        {property.asset_type}
+                        {asset_type}
                       </span>
                       <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
                       <span
                         className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          property.stage === "Ongoing"
+                          stage === "Ongoing"
                             ? "bg-orange-600 text-white"
                             : "bg-purple-600 text-white"
                         }`}
                       >
-                        {property.stage}
+                        {stage}
                       </span>
                     </div>
                     <div className="mt-2 flex">
                       <span className="text-sm font-bold w-[10rem] flex justify-start">
-                        {property.popUp}
+                        {popUp}
                       </span>
                       <span className="text-sm font-bold flex justify-end w-36">
-                        Rs. {property.price_Sq}/sqft
+                        Rs. {price_Sq}/sqft
                       </span>
                     </div>
                     <div className="mt-1 text-gray-600 text-xs font-semibold">
-                      by {property.developer}
+                      by {developer}
                     </div>
                     <div className="mt-3 font-medium flex justify-between space-x-5 w-auto">
                       <div className="text-gray-600 text-xs w-24">
                         Area <br />
-                        <span className="text-sm font-black">
-                          {property.area}
-                        </span>
+                        <span className="text-sm font-black">{area}</span>
                       </div>
                       <div className="text-gray-600 text-xs w-36">
                         Handover Year <br />
                         <span className="text-sm font-black">
-                          {property.handover_year}
+                          {handover_year}
                         </span>
                       </div>
                       <div className="text-gray-600 text-xs w-44">
                         Micromarket <br />
                         <span className="text-sm font-black">
-                          {property.micromarket}
+                          {micromarket}
                         </span>
                       </div>
                     </div>
