@@ -118,7 +118,9 @@ const MapView = ({ properties }) => {
         property.handover_year === selectedHandoverYear;
       const matchesSearch =
         searchQuery === "" ||
-        property.popUp.toLowerCase().includes(searchQuery.toLowerCase());
+        property.popUp.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.developer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.area.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesPreLaunch =
         !isPreLaunchFilterActive || property.stage === "Pre-Launch";
 
