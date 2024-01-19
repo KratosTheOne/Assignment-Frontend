@@ -120,7 +120,8 @@ const MapView = ({ properties }) => {
         searchQuery === "" ||
         property.popUp.toLowerCase().includes(searchQuery.toLowerCase()) ||
         property.developer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        property.area.toLowerCase().includes(searchQuery.toLowerCase());
+        property.area.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.micromarket.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesPreLaunch =
         !isPreLaunchFilterActive || property.stage === "Pre-Launch";
 
@@ -167,7 +168,7 @@ const MapView = ({ properties }) => {
           <div className="flex lg:w-[60%] ld:w-[60%] pr:w-full sm:w-full justify-between space-x-3">
             <input
               type="text"
-              placeholder="Search by property name or developer or area"
+              placeholder="Search by property name, developer or micromarket"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="border border-[#C4C4C4] rounded-md w-full h-full lg:px-4 ld:px-4 pr:px-4 pr:py-4 sm:px-4 sm:py-4"
