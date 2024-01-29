@@ -60,7 +60,7 @@ const handoverYearOptions = [
 
 const getMarkerIcon = (asset_type, availability, price) => {
   const iconHtml = `
-    <div class="bg-red-800 text-white rounded-full text-xs w-auto flex justify-center text-center px-4 py-1">
+    <div class="bg-red-700 text-white rounded-full text-xs w-auto flex justify-center text-center px-4 py-1">
       ${price}
     </div>
   `;
@@ -277,7 +277,7 @@ const MapView = ({ properties }) => {
 
         <MapContainer
           center={[12.9716, 77.5946]}
-          zoom={10}
+          zoom={11}
           style={{ height: "500px" }}
         >
           <TileLayer
