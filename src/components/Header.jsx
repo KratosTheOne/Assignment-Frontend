@@ -39,7 +39,7 @@ const Header = () => {
               className="text-sm font-semibold cursor-pointer text-[#006BFF] sm:hidden"
               onClick={openCalendly}
             >
-              Schedule
+              Book a meet
             </span>
           </div>
           <div className="flex items-center border border-[#39AE41] rounded-md px-3 py-2 sm:px-2 sm:py-2">
