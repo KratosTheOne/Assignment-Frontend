@@ -1,21 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-//import { Icon } from "leaflet";
 import { divIcon } from "leaflet";
 import PropTypes from "prop-types";
-//import markerImage from "../assets/marker.png";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-//import villaPre from "../assets/Icon/Villa normal pre launch.svg";
-//import villaNormal from "../assets/Icon/Villa normal.svg";
-//import landPre from "../assets/Icon/Land Normal pre launch.svg";
-//import landNormal from "../assets/Icon/Land Normal.svg";
-//import apartmentPre from "../assets/Icon/Apartment Normal Pre launch.svg";
-//import apartmentNormal from "../assets/Icon/Apartment Normal.svg";
 import ReactGA from "react-ga4";
 
 /*
@@ -72,6 +64,29 @@ const getMarkerIcon = (asset_type, availability, price) => {
   });
 };
 
+const areaCoordinates = {
+  Central: { center: [12.972442, 77.580643], zoom: 12 },
+  North: { center: [13.023815, 77.589219], zoom: 12 },
+  South: { center: [12.916576, 77.610116], zoom: 12 },
+  East: { center: [12.978414, 77.664707], zoom: 12 },
+  West: { center: [12.971891, 77.537956], zoom: 12 },
+  All: { center: [12.9716, 77.5946], zoom: 10 },
+};
+
+const MapComponent = ({ center, zoom }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(center, zoom);
+  }, [center, zoom, map]);
+
+  return null;
+};
+
+MapComponent.propTypes = {
+  center: PropTypes.arrayOf(PropTypes.number).isRequired,
+  zoom: PropTypes.number.isRequired,
+};
+
 /*const getMarkerIcon = (typeOptions, availabilityOptions) => {
   switch (typeOptions) {
     case "Villa":
@@ -96,6 +111,8 @@ const MapView = ({ properties }) => {
   const [selectedArea, setSelectedArea] = useState("All");
   const [selectedHandoverYear, setSelectedHandoverYear] = useState("All");
   const [isPreLaunchFilterActive, setIsPreLaunchFilterActive] = useState(false);
+  const [mapCenter, setMapCenter] = useState(areaCoordinates["All"].center);
+  const [zoomLevel, setZoomLevel] = useState(areaCoordinates["All"].zoom);
 
   const areFiltersApplied =
     selectedType !== "All" ||
@@ -138,6 +155,10 @@ const MapView = ({ properties }) => {
   };
 
   useEffect(() => {
+    if (areaCoordinates[selectedArea]) {
+      setMapCenter(areaCoordinates[selectedArea].center);
+      setZoomLevel(areaCoordinates[selectedArea].zoom);
+    }
     handleSearchAndFilter();
   }, [
     searchQuery,
@@ -146,6 +167,7 @@ const MapView = ({ properties }) => {
     selectedArea,
     selectedHandoverYear,
     isPreLaunchFilterActive,
+    selectedArea,
   ]);
 
   const trackPreLaunchClick = () => {
@@ -267,6 +289,8 @@ const MapView = ({ properties }) => {
                   setSelectedArea("All");
                   setSelectedHandoverYear("All");
                   setIsPreLaunchFilterActive(false);
+                  setMapCenter(areaCoordinates["All"].center);
+                  setZoomLevel(areaCoordinates["All"].zoom);
                 }}
               >
                 Clear Filters
@@ -276,10 +300,11 @@ const MapView = ({ properties }) => {
         </div>
 
         <MapContainer
-          center={[12.9716, 77.5946]}
-          zoom={11}
+          center={mapCenter}
+          zoom={zoomLevel}
           style={{ height: "500px" }}
         >
+          <MapComponent center={mapCenter} zoom={zoomLevel} />
           <TileLayer
             attribution="Google Maps"
             url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
