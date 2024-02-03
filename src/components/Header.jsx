@@ -7,7 +7,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const openCalendly = () => {
-    window.open("https://calendly.com/kaustubh-truestate/30min", "_blank");
+    window.open("https://calendly.com/contact-truestate/30min", "_blank");
   };
 
   const openWhatsapp = () => {
