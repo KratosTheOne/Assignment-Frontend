@@ -1,17 +1,25 @@
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+//import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDrI4J9_iygQYR4SG8PQiAONy2j5i5RG68",
-  authDomain: "mapsdatabase-ea31f.firebaseapp.com",
-  projectId: "mapsdatabase-ea31f",
-  storageBucket: "mapsdatabase-ea31f.appspot.com",
-  messagingSenderId: "201746746163",
-  appId: "1:201746746163:web:1b569679094f13d76fcc46",
+  apiKey: "AIzaSyC9W01ec3oHp_7tfVfUrs_PYnoHGbMmpAY",
+  authDomain: "maps-db-cms.firebaseapp.com",
+  projectId: "maps-db-cms",
+  storageBucket: "maps-db-cms.appspot.com",
+  messagingSenderId: "1087005587612",
+  appId: "1:1087005587612:web:bb1e28d7b9ec3afb175559",
+  measurementId: "G-G8D089Y0KM",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app);
 
 // Get Firestore instance
 const db = getFirestore(app);

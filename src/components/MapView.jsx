@@ -9,6 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import ReactGA from "react-ga4";
+import leftArrow from "../assets/Icon/SvgOfCard/Left.svg";
+import rightArrow from "../assets/Icon/SvgOfCard/Right.svg";
+//import IndividualListing from "./IndividualListing";
 
 /*
 const customIcon = new Icon({
@@ -87,22 +90,6 @@ MapComponent.propTypes = {
   zoom: PropTypes.number.isRequired,
 };
 
-/*const getMarkerIcon = (typeOptions, availabilityOptions) => {
-  switch (typeOptions) {
-    case "Villa":
-      return availabilityOptions === "Pre-Launch" ? villaPre : villaNormal;
-    case "Land":
-      return availabilityOptions === "Pre-Launch" ? landPre : landNormal;
-    case "Apartment":
-      return availabilityOptions === "Pre-Launch"
-        ? apartmentPre
-        : apartmentNormal;
-    default:
-      return markerImage;
-  }
-};
-*/
-
 const MapView = ({ properties }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProperties, setFilteredProperties] = useState(properties);
@@ -113,6 +100,18 @@ const MapView = ({ properties }) => {
   const [isPreLaunchFilterActive, setIsPreLaunchFilterActive] = useState(false);
   const [mapCenter, setMapCenter] = useState(areaCoordinates["All"].center);
   const [zoomLevel, setZoomLevel] = useState(areaCoordinates["All"].zoom);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  //const [isModalOpen, setIsModalOpen] = useState(false);
+  //const [selectedProperty, setSelectedProperty] = useState(null);
+
+  //const navigate = useNavigate();
+
+  const handlePopupClick = (property) => {
+    //setSelectedProperty(property);
+    //setIsModalOpen(true);
+    window.location.href = `/${property.id}/${property.popUp}/listingDetails`;
+  };
 
   const areFiltersApplied =
     selectedType !== "All" ||
@@ -132,7 +131,7 @@ const MapView = ({ properties }) => {
         selectedArea === "All" || property.area === selectedArea;
       const matchesHandoverYear =
         selectedHandoverYear === "All" ||
-        property.handover_year === selectedHandoverYear;
+        property.year === selectedHandoverYear;
       const matchesSearch =
         searchQuery === "" ||
         property.popUp.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -177,6 +176,7 @@ const MapView = ({ properties }) => {
     });
   };
 
+  //console.log(setIsModalOpen);
   return (
     <>
       <div className="flex flex-col justify-between text-left mt-4 items-center">
@@ -298,7 +298,6 @@ const MapView = ({ properties }) => {
             )}
           </div>
         </div>
-
         <MapContainer
           center={mapCenter}
           zoom={zoomLevel}
@@ -325,7 +324,26 @@ const MapView = ({ properties }) => {
               stage,
               handover_year,
               developer,
+              property_images,
             } = property;
+
+            // Function to handle clicking the next image button
+            const handleNextImage = () => {
+              event.stopPropagation();
+              setCurrentImageIndex(
+                (prevIndex) => (prevIndex + 1) % property_images.length
+              );
+            };
+
+            // Function to handle clicking the previous image button
+            const handlePrevImage = () => {
+              event.stopPropagation();
+              setCurrentImageIndex(
+                (prevIndex) =>
+                  (prevIndex - 1 + property_images.length) %
+                  property_images.length
+              );
+            };
 
             const markerIcon = getMarkerIcon(
               asset_type,
@@ -336,59 +354,86 @@ const MapView = ({ properties }) => {
             return (
               <Marker key={id} position={geocode} icon={markerIcon}>
                 <Popup className="w-auto">
-                  <div className="li-3 rounded-xl w-auto">
-                    <div className="flex items-center space-x-2">
-                      <span
-                        className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          availability === "Available"
-                            ? "bg-green-700 text-white"
-                            : "bg-red-700 text-white"
-                        }`}
+                  <div className="li-3 rounded-xl w-auto cursor-pointer">
+                    <div
+                      className="Carousel mb-3 relative"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {/* Image Carousel */}
+                      <img
+                        src={property_images[currentImageIndex]}
+                        alt="Property"
+                        className="rounded-xl object-cover"
+                      />
+                      {/* Previous Button */}
+                      <button
+                        onClick={handlePrevImage}
+                        className="absolute left-0 top-1/2"
                       >
-                        {availability}
-                      </span>
-                      <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
-                      <span className="text-xs font-semibold text-gray-500">
-                        {asset_type}
-                      </span>
-                      <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
-                      <span
-                        className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          stage === "Ongoing"
-                            ? "bg-orange-600 text-white"
-                            : "bg-purple-600 text-white"
-                        }`}
+                        <img src={leftArrow} alt="Previous" />
+                      </button>
+                      {/* Next Button */}
+                      <button
+                        onClick={handleNextImage}
+                        className="absolute right-0 top-1/2"
                       >
-                        {stage}
-                      </span>
+                        <img src={rightArrow} alt="Next" />
+                      </button>
                     </div>
-                    <div className="mt-2 flex">
-                      <span className="text-sm font-bold w-[10rem] flex justify-start">
-                        {popUp}
-                      </span>
-                      <span className="text-sm font-bold flex justify-end w-36">
-                        Rs. {price_Sq}/sqft
-                      </span>
-                    </div>
-                    <div className="mt-1 text-gray-600 text-xs font-semibold">
-                      by {developer}
-                    </div>
-                    <div className="mt-3 font-medium flex justify-between space-x-5 w-auto">
-                      <div className="text-gray-600 text-xs w-24">
-                        Area <br />
-                        <span className="text-sm font-black">{area}</span>
-                      </div>
-                      <div className="text-gray-600 text-xs w-36">
-                        Handover Year <br />
-                        <span className="text-sm font-black">
-                          {handover_year}
+                    <div onClick={() => handlePopupClick(property)}>
+                      <div className="flex items-center space-x-2">
+                        <span
+                          className={`text-xs font-medium px-2 py-1 rounded-full ${
+                            availability === "Available"
+                              ? "bg-green-700 text-white"
+                              : "bg-red-700 text-white"
+                          }`}
+                        >
+                          {availability}
+                        </span>
+                        <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
+                        <span className="text-xs font-semibold text-gray-500">
+                          {asset_type}
+                        </span>
+                        <div className="border-[1px] border-gray-300 h-5 rounded-full"></div>
+                        <span
+                          className={`text-xs font-medium px-2 py-1 rounded-full ${
+                            stage !== "Ongoing"
+                              ? "bg-[#F54C1E] text-white"
+                              : "bg-purple-600 text-white"
+                          }`}
+                        >
+                          {stage}
                         </span>
                       </div>
-                      <div className="text-gray-600 text-xs w-44">
-                        Micromarket <br />
-                        <span className="text-sm font-black">
-                          {micromarket}
+                      <div className="mt-2 flex">
+                        <span className="text-sm font-bold w-[10rem] flex justify-start">
+                          {popUp}
                         </span>
+                        <span className="text-sm font-bold flex justify-end w-36">
+                          Rs. {price_Sq}/sqft
+                        </span>
+                      </div>
+                      <div className="mt-1 text-gray-600 text-xs font-semibold">
+                        by {developer}
+                      </div>
+                      <div className="mt-3 font-medium flex justify-between space-x-5 w-full">
+                        <div className="text-gray-600 text-xs w-24">
+                          Area <br />
+                          <span className="text-sm font-black">{area}</span>
+                        </div>
+                        <div className="text-gray-600 text-xs w-36">
+                          Handover Year <br />
+                          <span className="text-sm font-black">
+                            {handover_year}
+                          </span>
+                        </div>
+                        <div className="text-gray-600 text-xs w-44">
+                          Micromarket <br />
+                          <span className="text-sm font-black">
+                            {micromarket}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -398,7 +443,6 @@ const MapView = ({ properties }) => {
           })}
         </MapContainer>
       </div>
-
       <div className="flex-col justify-start mt-4 mb-8 max-w-[89rem] mx-auto px-3">
         <h6 className="font-bold flex justify-start text-base mb-1">Note</h6>
         <ul className="list-disc px-6 text-sm space-y-1 mb-2">

@@ -1,7 +1,7 @@
 //import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";
 import MapView from "../components/MapView";
-import { properties } from "../utils/properties.js";
+import properties from "../utils/props_new.json";
 
 const Home = () => {
   return (
