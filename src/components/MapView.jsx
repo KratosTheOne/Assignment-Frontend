@@ -55,7 +55,7 @@ const handoverYearOptions = [
 
 const getMarkerIcon = (asset_type, availability, price) => {
   const iconHtml = `
-    <div class="bg-red-700 text-white rounded-full text-xs w-auto flex justify-center text-center px-4 py-1">
+    <div class="bg-red-700 text-white rounded-full text-xs w-auto flex justify-center text-center px-5 py-1">
       ${price}
     </div>
   `;
@@ -73,7 +73,7 @@ const areaCoordinates = {
   South: { center: [12.916576, 77.610116], zoom: 12 },
   East: { center: [12.978414, 77.664707], zoom: 12 },
   West: { center: [12.971891, 77.537956], zoom: 12 },
-  All: { center: [12.9716, 77.5946], zoom: 10 },
+  All: { center: [12.9716, 77.5946], zoom: 11 },
 };
 
 const MapComponent = ({ center, zoom }) => {
@@ -354,16 +354,16 @@ const MapView = ({ properties }) => {
             return (
               <Marker key={id} position={geocode} icon={markerIcon}>
                 <Popup className="w-auto">
-                  <div className="li-3 rounded-xl w-auto cursor-pointer">
+                  <div className="rounded-xl w-[280px] cursor-pointer">
                     <div
-                      className="Carousel mb-3 relative"
+                      className="Carousel mb-2 relative w-full h-[10rem]"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {/* Image Carousel */}
                       <img
                         src={property_images[currentImageIndex]}
-                        alt="Property"
-                        className="rounded-xl object-cover"
+                        alt="Image not Available"
+                        className="rounded-xl object-cover w-full h-full"
                       />
                       {/* Previous Button */}
                       <button
@@ -407,28 +407,28 @@ const MapView = ({ properties }) => {
                         </span>
                       </div>
                       <div className="mt-2 flex">
-                        <span className="text-sm font-bold w-[10rem] flex justify-start">
+                        <span className="text-sm font-bold w-48 flex justify-start">
                           {popUp}
                         </span>
-                        <span className="text-sm font-bold flex justify-end w-36">
+                        <span className="text-sm font-bold flex pl-2 w-36">
                           Rs. {price_Sq}/sqft
                         </span>
                       </div>
-                      <div className="mt-1 text-gray-600 text-xs font-semibold">
+                      <div className="text-gray-600 text-xs font-semibold">
                         by {developer}
                       </div>
-                      <div className="mt-3 font-medium flex justify-between space-x-5 w-full">
-                        <div className="text-gray-600 text-xs w-24">
+                      <div className="mt-1 font-medium flex w-full justify-between">
+                        <div className="text-gray-600 text-xs w-16">
                           Area <br />
                           <span className="text-sm font-black">{area}</span>
                         </div>
-                        <div className="text-gray-600 text-xs w-36">
+                        <div className="text-gray-600 text-xs w-[90px]">
                           Handover Year <br />
                           <span className="text-sm font-black">
                             {handover_year}
                           </span>
                         </div>
-                        <div className="text-gray-600 text-xs w-44">
+                        <div className="text-gray-600 text-xs w-28">
                           Micromarket <br />
                           <span className="text-sm font-black">
                             {micromarket}

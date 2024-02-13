@@ -31,7 +31,7 @@ const IndividualListing = ({ properties }) => {
   }, [id, properties]);
 
   const url = window.location.href;
-  const whatsappMessage = `Check out this property: ${url}`;
+  const whatsappMessage = `Check out this property on TruEstate: ${url}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
