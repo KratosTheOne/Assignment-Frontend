@@ -1,13 +1,12 @@
-//import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";
 import MapView from "../components/MapView";
-import properties from "../utils/props_new.json";
+//import properties from "../utils/props_new.json";
 
 const Home = () => {
   return (
     <div className="overflow-hidden">
       <div className="h-full overflow-hidden bg-[#F9F9FA]">
-        <MapView properties={properties} />
+        <MapView />
       </div>
       <div className="h-full overflow-hidden">
         <Footer />
@@ -17,9 +16,3 @@ const Home = () => {
 };
 
 export default Home;
-
-/**
- *<div className="h-full overflow-hidden">
-        <ContactUs />
-      </div>
- */

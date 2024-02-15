@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import leftArrow from "../assets/Icon/SvgOfCard/Left.svg";
 import rightArrow from "../assets/Icon/SvgOfCard/Right.svg";
@@ -9,8 +8,10 @@ import brochure from "../assets/Icon/SvgOfCard/Download.svg";
 import left from "../assets/Icon/left1.svg";
 import share from "../assets/Icon/share.svg";
 import whatsappIcon from "../assets/Icon/whatsapp.svg";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
-const IndividualListing = ({ properties }) => {
+const IndividualListing = () => {
   const { id } = useParams();
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -22,13 +23,24 @@ const IndividualListing = ({ properties }) => {
   };
 
   useEffect(() => {
-    const property = properties.find((p) => p.id.toString() === id);
-    setSelectedProperty(property);
+    const fetchProperty = async () => {
+      const docRef = doc(db, "users", id); // Assuming 'users' is your collection name
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setSelectedProperty({ id: docSnap.id, ...docSnap.data() });
+      } else {
+        console.log("No such document!");
+      }
+    };
+
+    fetchProperty().catch(console.error);
+
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [id, properties]);
+  }, [id]);
 
   const url = window.location.href;
   const whatsappMessage = `Check out this property on TruEstate: ${url}`;
@@ -288,24 +300,6 @@ const IndividualListing = ({ properties }) => {
       )}
     </div>
   );
-};
-
-IndividualListing.propTypes = {
-  properties: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      popUp: PropTypes.string,
-      asset_type: PropTypes.string,
-      availability: PropTypes.string,
-      area: PropTypes.string,
-      micromarket: PropTypes.string,
-      price_Sq: PropTypes.string,
-      price_k: PropTypes.string,
-      stage: PropTypes.string,
-      handover_year: PropTypes.string,
-      developer: PropTypes.string,
-    })
-  ).isRequired,
 };
 
 export default IndividualListing;

@@ -11,6 +11,8 @@ import InputLabel from "@mui/material/InputLabel";
 import ReactGA from "react-ga4";
 import leftArrow from "../assets/Icon/SvgOfCard/Left.svg";
 import rightArrow from "../assets/Icon/SvgOfCard/Right.svg";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 //import IndividualListing from "./IndividualListing";
 
 /*
@@ -90,8 +92,9 @@ MapComponent.propTypes = {
   zoom: PropTypes.number.isRequired,
 };
 
-const MapView = ({ properties }) => {
+const MapView = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState(properties);
   const [selectedType, setSelectedType] = useState("All");
   const [selectedAvailability, setSelectedAvailability] = useState("All");
@@ -120,7 +123,14 @@ const MapView = ({ properties }) => {
     selectedHandoverYear !== "All" ||
     searchQuery !== "";
 
-  const handleSearchAndFilter = () => {
+  useEffect(() => {
+    // Adjust map center and zoom based on the selected area
+    if (areaCoordinates[selectedArea]) {
+      setMapCenter(areaCoordinates[selectedArea].center);
+      setZoomLevel(areaCoordinates[selectedArea].zoom);
+    }
+
+    // Filter properties based on the current filter settings
     const filtered = properties.filter((property) => {
       const matchesType =
         selectedType === "All" || property.asset_type === selectedType;
@@ -150,10 +160,32 @@ const MapView = ({ properties }) => {
         matchesPreLaunch
       );
     });
-    setFilteredProperties(filtered);
-  };
 
+    // Update the filteredProperties state with the filtered results
+    setFilteredProperties(filtered);
+  }, [
+    properties, // Ensure filtering is reapplied when properties are fetched or updated
+    searchQuery,
+    selectedType,
+    selectedAvailability,
+    selectedArea,
+    selectedHandoverYear,
+    isPreLaunchFilterActive,
+  ]);
+
+  /*
   useEffect(() => {
+    const fetchProperties = async () => {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const propertiesArray = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setProperties(propertiesArray);
+    };
+
+    fetchProperties().catch(console.error);
+
     if (areaCoordinates[selectedArea]) {
       setMapCenter(areaCoordinates[selectedArea].center);
       setZoomLevel(areaCoordinates[selectedArea].zoom);
@@ -167,7 +199,21 @@ const MapView = ({ properties }) => {
     selectedHandoverYear,
     isPreLaunchFilterActive,
     selectedArea,
-  ]);
+  ]);*/
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const propertiesArray = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setProperties(propertiesArray);
+      setFilteredProperties(propertiesArray);
+    };
+
+    fetchProperties().catch(console.error);
+  }, []);
 
   const trackPreLaunchClick = () => {
     ReactGA.event({
@@ -352,7 +398,11 @@ const MapView = ({ properties }) => {
             );
 
             return (
-              <Marker key={id} position={geocode} icon={markerIcon}>
+              <Marker
+                key={id}
+                position={[geocode[0], geocode[1]]}
+                icon={markerIcon}
+              >
                 <Popup className="w-auto">
                   <div className="rounded-xl w-[280px] cursor-pointer">
                     <div
@@ -483,18 +533,6 @@ const MapView = ({ properties }) => {
   );
 };
 
-MapView.propTypes = {
-  properties: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      geocode: PropTypes.arrayOf(PropTypes.number),
-      popUp: PropTypes.string,
-      asset_type: PropTypes.string,
-      availability: PropTypes.string,
-      area: PropTypes.string,
-      micromarket: PropTypes.string,
-    })
-  ).isRequired,
-};
+MapView.propTypes = {};
 
 export default MapView;

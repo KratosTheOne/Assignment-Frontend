@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import ReactGA from "react-ga4";
 import IndividualListing from "./components/IndividualListing";
-import properties from "./utils/props_new.json";
+//import properties from "./utils/props_new.json";
 
 const trackingId = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
@@ -25,7 +25,7 @@ const App = () => {
         <Routes>
           <Route
             path="/:id/:popUp/listingDetails"
-            element={<IndividualListing properties={properties} />}
+            element={<IndividualListing />}
           />
         </Routes>
       </BrowserRouter>
