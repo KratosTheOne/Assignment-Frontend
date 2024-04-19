@@ -9,10 +9,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import ReactGA from "react-ga4";
-import leftArrow from "../assets/Icon/SvgOfCard/Left.svg";
-import rightArrow from "../assets/Icon/SvgOfCard/Right.svg";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
+import sampleImg from "../assets/Images/sampleImg.jpeg";
+//import { useNavigate } from "react-router";
 //import IndividualListing from "./IndividualListing";
 
 /*
@@ -101,20 +101,21 @@ const MapView = () => {
   const [selectedArea, setSelectedArea] = useState("All");
   const [selectedHandoverYear, setSelectedHandoverYear] = useState("All");
   const [isPreLaunchFilterActive, setIsPreLaunchFilterActive] = useState(false);
-  const [mapCenter, setMapCenter] = useState(areaCoordinates["All"].center);
-  const [zoomLevel, setZoomLevel] = useState(areaCoordinates["All"].zoom);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [mapCenter, setMapCenter] = useState(
+    areaCoordinates["All"].center || [12.9716, 77.5946]
+  );
+  const [zoomLevel, setZoomLevel] = useState(areaCoordinates["All"].zoom || 10);
 
   //const [isModalOpen, setIsModalOpen] = useState(false);
   //const [selectedProperty, setSelectedProperty] = useState(null);
 
   //const navigate = useNavigate();
 
-  const handlePopupClick = (property) => {
-    //setSelectedProperty(property);
-    //setIsModalOpen(true);
-    window.location.href = `/${property.id}/${property.popUp}/listingDetails`;
-  };
+  /* const handlePopupClick = (property) => {
+    navigate(
+      `/${property.id}/${encodeURIComponent(property.pop_up)}/listingDetails`
+    );
+  }; */
 
   const areFiltersApplied =
     selectedType !== "All" ||
@@ -141,13 +142,24 @@ const MapView = () => {
         selectedArea === "All" || property.area === selectedArea;
       const matchesHandoverYear =
         selectedHandoverYear === "All" ||
-        property.year === selectedHandoverYear;
+        property.handover_date === selectedHandoverYear;
+
+      // Ensure all strings are checked for being undefined before toLowerCase() is called
       const matchesSearch =
         searchQuery === "" ||
-        property.popUp.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        property.developer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        property.area.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        property.micromarket.toLowerCase().includes(searchQuery.toLowerCase());
+        (property.pop_up &&
+          property.pop_up.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (property.developer &&
+          property.developer
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())) ||
+        (property.area &&
+          property.area.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (property.micromarket &&
+          property.micromarket
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()));
+
       const matchesPreLaunch =
         !isPreLaunchFilterActive || property.stage === "Pre-Launch";
 
@@ -203,7 +215,10 @@ const MapView = () => {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
+      // Changed to 'properties' collection and filtered by 'internal_id' existence
+      const querySnapshot = await getDocs(
+        query(collection(db, "properties"), where("internal_id", "!=", null))
+      );
       const propertiesArray = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -359,50 +374,31 @@ const MapView = () => {
           {filteredProperties.map((property) => {
             const {
               id,
-              geocode,
-              popUp,
+              lats,
+              langs,
+              pop_up,
               asset_type,
               availability,
               area,
               micromarket,
-              price_Sq,
+              price_sq,
               price_k,
               stage,
-              handover_year,
+              handover_date,
               developer,
-              property_images,
             } = property;
 
-            // Function to handle clicking the next image button
-            const handleNextImage = () => {
-              event.stopPropagation();
-              setCurrentImageIndex(
-                (prevIndex) => (prevIndex + 1) % property_images.length
-              );
-            };
-
-            // Function to handle clicking the previous image button
-            const handlePrevImage = () => {
-              event.stopPropagation();
-              setCurrentImageIndex(
-                (prevIndex) =>
-                  (prevIndex - 1 + property_images.length) %
-                  property_images.length
-              );
-            };
+            const positionIsValid =
+              typeof lats === "number" && typeof langs === "number";
 
             const markerIcon = getMarkerIcon(
               asset_type,
               availability,
-              `${price_k}`
+              `${price_k}k`
             );
 
-            return (
-              <Marker
-                key={id}
-                position={[geocode[0], geocode[1]]}
-                icon={markerIcon}
-              >
+            return positionIsValid ? (
+              <Marker key={id} position={[lats, langs]} icon={markerIcon}>
                 <Popup className="w-auto">
                   <div className="rounded-xl w-[280px] cursor-pointer">
                     <div
@@ -411,27 +407,13 @@ const MapView = () => {
                     >
                       {/* Image Carousel */}
                       <img
-                        src={property_images[currentImageIndex]}
+                        src={sampleImg}
                         alt="Image not Available"
-                        className="rounded-xl object-cover w-full h-full"
+                        className="rounded-xl object-cover w-full"
                       />
-                      {/* Previous Button */}
-                      <button
-                        onClick={handlePrevImage}
-                        className="absolute left-0 top-1/2"
-                      >
-                        <img src={leftArrow} alt="Previous" />
-                      </button>
-                      {/* Next Button */}
-                      <button
-                        onClick={handleNextImage}
-                        className="absolute right-0 top-1/2"
-                      >
-                        <img src={rightArrow} alt="Next" />
-                      </button>
                     </div>
-                    <div onClick={() => handlePopupClick(property)}>
-                      <div className="flex items-center space-x-2">
+                    <div /* onClick={() => handlePopupClick(property)} */>
+                      <div className="flex items-center space-x-2 mt-20">
                         <span
                           className={`text-xs font-medium px-2 py-1 rounded-full ${
                             availability === "Available"
@@ -458,10 +440,10 @@ const MapView = () => {
                       </div>
                       <div className="mt-2 flex">
                         <span className="text-sm font-bold w-48 flex justify-start">
-                          {popUp}
+                          {pop_up}
                         </span>
                         <span className="text-sm font-bold flex pl-2 w-36">
-                          Rs. {price_Sq}/sqft
+                          Rs. {price_sq}/sqft
                         </span>
                       </div>
                       <div className="text-gray-600 text-xs font-semibold">
@@ -475,7 +457,7 @@ const MapView = () => {
                         <div className="text-gray-600 text-xs w-[90px]">
                           Handover Year <br />
                           <span className="text-sm font-black">
-                            {handover_year}
+                            {handover_date}
                           </span>
                         </div>
                         <div className="text-gray-600 text-xs w-28">
@@ -489,7 +471,7 @@ const MapView = () => {
                   </div>
                 </Popup>
               </Marker>
-            );
+            ) : null;
           })}
         </MapContainer>
       </div>

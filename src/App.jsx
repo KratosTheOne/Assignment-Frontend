@@ -24,7 +24,7 @@ const App = () => {
         </Routes>
         <Routes>
           <Route
-            path="/:id/:popUp/listingDetails"
+            path="/:id/:pop_up/listingDetails"
             element={<IndividualListing />}
           />
         </Routes>

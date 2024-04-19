@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import leftArrow from "../assets/Icon/SvgOfCard/Left.svg";
-import rightArrow from "../assets/Icon/SvgOfCard/Right.svg";
 import logo from "../assets/logo.png";
 import brochure from "../assets/Icon/SvgOfCard/Download.svg";
 import left from "../assets/Icon/left1.svg";
@@ -10,37 +8,47 @@ import share from "../assets/Icon/share.svg";
 import whatsappIcon from "../assets/Icon/whatsapp.svg";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import sampleImg from "../assets/Images/sampleImg.jpeg";
 
 const IndividualListing = () => {
-  const { id } = useParams();
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const { id, pop_up } = useParams();
+  const decodedPopUp = decodeURIComponent(pop_up);
 
   const handleBackClick = () => {
     navigate(-1);
   };
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchProperty = async () => {
-      const docRef = doc(db, "users", id); // Assuming 'users' is your collection name
+      const docRef = doc(db, "properties", id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         setSelectedProperty({ id: docSnap.id, ...docSnap.data() });
       } else {
+        setError(true);
         console.log("No such document!");
       }
     };
 
-    fetchProperty().catch(console.error);
-
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
+    fetchProperty().catch((err) => {
+      setError(true);
+      console.error("Error fetching document:", err);
+    });
   }, [id]);
+
+  if (error) {
+    return <div>No property details available. Please try again later.</div>;
+  }
+
+  if (!selectedProperty) {
+    return <div>Loading...</div>;
+  }
 
   const url = window.location.href;
   const whatsappMessage = `Check out this property on TruEstate: ${url}`;
@@ -67,33 +75,15 @@ const IndividualListing = () => {
     availability,
     area,
     micromarket,
-    price_Sq,
+    price_sq,
     price_cr,
     land_area,
     total_units,
     stage,
-    handover_year,
+    handover_date,
     developer,
-    property_images,
     brochure_link,
   } = selectedProperty;
-
-  // Function to handle clicking the next image button
-  const handleNextImage = () => {
-    event.stopPropagation();
-    setCurrentImageIndex(
-      (prevIndex) => (prevIndex + 1) % property_images.length
-    );
-  };
-
-  // Function to handle clicking the previous image button
-  const handlePrevImage = () => {
-    event.stopPropagation();
-    setCurrentImageIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + property_images.length) % property_images.length
-    );
-  };
 
   return (
     <div
@@ -144,26 +134,11 @@ const IndividualListing = () => {
             className="Carousel mt-4 relative w-full h-[20rem]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image Carousel */}
             <img
-              src={property_images[currentImageIndex]}
+              src={sampleImg}
               alt="Property"
               className="rounded-xl object-cover w-full h-full"
             />
-            {/* Previous Button */}
-            <button
-              onClick={handlePrevImage}
-              className="absolute left-0 top-1/2"
-            >
-              <img src={leftArrow} alt="Previous" />
-            </button>
-            {/* Next Button */}
-            <button
-              onClick={handleNextImage}
-              className="absolute right-0 top-1/2"
-            >
-              <img src={rightArrow} alt="Next" />
-            </button>
           </div>
           <div className="flex itxems-center space-x-3 mt-4">
             <span
@@ -192,7 +167,7 @@ const IndividualListing = () => {
           </div>
           <div className="flex justify-between mt-4 content-center text-center">
             <span className="text-lg font-bold flex pt-1">
-              Rs. {price_Sq}/sqft
+              Rs. {price_sq}/sqft
             </span>
             {brochure_link && brochure_link !== "N/A" ? (
               <div
@@ -247,7 +222,7 @@ const IndividualListing = () => {
               <div className="text-gray-600 text-sm lg:w-[8.5rem] sm:w-[6rem] pr:w-[7rem] ld:w-[8.5rem]">
                 Handover Year <br />
                 <span className="text-base font-bold text-black">
-                  {handover_year}
+                  {handover_date}
                 </span>
               </div>
             </div>
